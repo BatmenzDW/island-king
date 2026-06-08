@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://whhj484u54a3"]
+
+[ext_resource type="Script" uid="uid://cht06f4ig2rgd" path="res://objects/upgrade.gd" id="1_4k4ar"]
+[ext_resource type="Texture2D" uid="uid://dmqanl8gk20gw" path="res://assets/sprites/Sign_Avalible.png" id="2_n3no1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4k4ar"]
+size = Vector2(32, 32)
+
+[node name="Sign" type="Node2D" unique_id=296584255]
+script = ExtResource("1_4k4ar")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=75681142]
+texture_filter = 1
+texture_repeat = 1
+texture = ExtResource("2_n3no1")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=841878281]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1945260358]
+shape = SubResource("RectangleShape2D_4k4ar")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

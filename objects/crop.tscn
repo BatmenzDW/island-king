@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://buqa5prb01jh2"]
+
+[ext_resource type="Script" uid="uid://8dwspneel7q5" path="res://objects/crop.gd" id="1_tuwnb"]
+[ext_resource type="Texture2D" uid="uid://cy2hh6cxlpiu4" path="res://assets/sprites/Pineapple_Plant.png" id="2_7lgks"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fe780"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pl0dt"]
+size = Vector2(22, 24)
+
+[node name="Crop" type="Node2D" unique_id=575629771]
+z_index = 1
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_tuwnb")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=156515052]
+replication_config = SubResource("SceneReplicationConfig_fe780")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1241900487]
+texture_filter = 1
+texture_repeat = 1
+texture = ExtResource("2_7lgks")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=946909584]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=814463516]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_pl0dt")

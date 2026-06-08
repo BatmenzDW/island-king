@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cjt3e20au4bht"]
+
+[ext_resource type="Texture2D" uid="uid://dyu1bufv2paew" path="res://assets/sprites/Cutting_Board.png" id="1_eiqtk"]
+[ext_resource type="Script" uid="uid://ufvsbl1hdf7u" path="res://objects/cutting_board.gd" id="1_sobsv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sobsv"]
+size = Vector2(28, 14)
+
+[node name="CuttingBoard" type="Node2D" unique_id=812343083]
+script = ExtResource("1_sobsv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1407968002]
+texture_filter = 1
+texture_repeat = 1
+texture = ExtResource("1_eiqtk")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=211369883]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=949866083]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_sobsv")

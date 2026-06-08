@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dabrc5rcw5pfw"]
+
+[ext_resource type="Script" uid="uid://blcrc21u4wnvo" path="res://objects/door.gd" id="1_566yj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5jtvd"]
+size = Vector2(19.5, 20)
+
+[node name="Door" type="Area2D" unique_id=1525377132]
+collision_mask = 2
+script = ExtResource("1_566yj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=212285880]
+shape = SubResource("RectangleShape2D_5jtvd")
+
+[node name="TeleportLocation" type="Node2D" parent="." unique_id=433916033]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

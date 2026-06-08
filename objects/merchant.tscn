@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://cnsy7k5p5rxks"]
+
+[ext_resource type="Script" uid="uid://b4bly4xtrxo7x" path="res://objects/merchant.gd" id="1_gx5uh"]
+[ext_resource type="Texture2D" uid="uid://vqd1wbbuis6r" path="res://assets/sprites/Merchant.png" id="1_ygu8s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ygu8s"]
+size = Vector2(42, 44)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gx5uh"]
+size = Vector2(15, 22)
+
+[node name="Merchant" type="Node2D" unique_id=1278632505]
+script = ExtResource("1_gx5uh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2011451977]
+texture_filter = 1
+rotation = -1.5707964
+texture = ExtResource("1_ygu8s")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=754752514]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=656296354]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_ygu8s")
+
+[node name="StaticBody" type="StaticBody2D" parent="." unique_id=1908122967]
+collision_layer = 3
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody" unique_id=274524268]
+position = Vector2(-2.5, 0)
+shape = SubResource("RectangleShape2D_gx5uh")

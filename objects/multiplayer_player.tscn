@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://cx7nki6skac8f"]
+
+[ext_resource type="Script" uid="uid://cxew51me7b7rd" path="res://objects/multiplayer_controller.gd" id="1_t02f1"]
+[ext_resource type="Script" uid="uid://bw6fouucwdj86" path="res://scripts/multiplayer/multiplayer_input.gd" id="2_m6ijf"]
+[ext_resource type="Texture2D" uid="uid://c6j6i2tv1a87o" path="res://assets/sprites/Idle_Up.png" id="3_m6ijf"]
+[ext_resource type="Texture2D" uid="uid://b0qhu3afab7mu" path="res://assets/sprites/Use_Up_1.png" id="4_8po57"]
+[ext_resource type="Texture2D" uid="uid://csekehjs4pqj5" path="res://assets/sprites/Attack_Up_1.png" id="4_e0kx0"]
+[ext_resource type="Texture2D" uid="uid://c87j5n1qh3a5l" path="res://assets/sprites/Attack_Up_2.png" id="5_h2hq7"]
+[ext_resource type="Texture2D" uid="uid://bbr3oekxmoqg3" path="res://assets/sprites/Use_Up_2.png" id="5_wy7hh"]
+[ext_resource type="Texture2D" uid="uid://bgi051wkf6xhi" path="res://assets/sprites/Attack_Up_3.png" id="6_j6gdg"]
+[ext_resource type="Texture2D" uid="uid://dm7gofg4a474x" path="res://assets/sprites/Use_Up_3.png" id="6_wvp6w"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_m6ijf"]
+properties/0/path = NodePath(".:player_id")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:do_attack")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:is_using")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+properties/4/path = NodePath(".:rotation")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath(".:crop_count")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath(".:sliced_count")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath(".:cooked_count")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath("AnimatedSprite2D:animation")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath("AnimatedSprite2D:frame")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_t02f1"]
+properties/0/path = NodePath("InputSynchronizer:input_direction_hor")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("InputSynchronizer:input_direction_vert")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m6ijf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_m6ijf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_e0kx0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_h2hq7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_j6gdg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_h2hq7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_e0kx0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_m6ijf")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_m6ijf")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_m6ijf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8po57")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wy7hh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_wvp6w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wy7hh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_8po57")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_m6ijf")
+}],
+"loop": true,
+"name": &"use",
+"speed": 15.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chigq"]
+size = Vector2(24, 15)
+
+[node name="MultiplayerPlayer" type="CharacterBody2D" unique_id=1232547758]
+scale = Vector2(1.5, 1.5)
+collision_layer = 2
+script = ExtResource("1_t02f1")
+
+[node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1417357529]
+replication_config = SubResource("SceneReplicationConfig_m6ijf")
+
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1029306365]
+unique_name_in_owner = true
+replication_config = SubResource("SceneReplicationConfig_t02f1")
+script = ExtResource("2_m6ijf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=527742410]
+z_index = 3
+texture_filter = 1
+texture_repeat = 1
+sprite_frames = SubResource("SpriteFrames_m6ijf")
+animation = &"idle"
+frame_progress = 0.9403129
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1408661799]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_chigq")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1336078839]
+zoom = Vector2(2, 2)
