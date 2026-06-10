@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bbr3oekxmoqg3" path="res://assets/sprites/Use_Up_2.png" id="5_wy7hh"]
 [ext_resource type="Texture2D" uid="uid://bgi051wkf6xhi" path="res://assets/sprites/Attack_Up_3.png" id="6_j6gdg"]
 [ext_resource type="Texture2D" uid="uid://dm7gofg4a474x" path="res://assets/sprites/Use_Up_3.png" id="6_wvp6w"]
+[ext_resource type="Texture2D" uid="uid://dn40bro2w6jgs" path="res://assets/sprites/Crown.png" id="10_h2hq7"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_m6ijf"]
 properties/0/path = NodePath(".:player_id")
@@ -40,7 +41,13 @@ properties/8/spawn = true
 properties/8/replication_mode = 2
 properties/9/path = NodePath("AnimatedSprite2D:frame")
 properties/9/spawn = true
-properties/9/replication_mode = 1
+properties/9/replication_mode = 2
+properties/10/path = NodePath("Sprite2D:visible")
+properties/10/spawn = true
+properties/10/replication_mode = 2
+properties/11/path = NodePath(".:gold_count")
+properties/11/spawn = true
+properties/11/replication_mode = 2
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_t02f1"]
 properties/0/path = NodePath("InputSynchronizer:input_direction_hor")
@@ -143,3 +150,11 @@ shape = SubResource("RectangleShape2D_chigq")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1336078839]
 zoom = Vector2(2, 2)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=496773881]
+visible = false
+z_index = 4
+texture_filter = 1
+position = Vector2(0.6666667, 12)
+rotation = 3.1415927
+texture = ExtResource("10_h2hq7")

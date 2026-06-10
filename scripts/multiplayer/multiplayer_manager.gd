@@ -8,8 +8,8 @@ var _players_spawn_node : Node2D
 var is_host : bool = false
 var is_game_connected : bool = false
 
-const SERVER_PORT = 8080
-const SERVER_IP = "127.0.0.1"
+var SERVER_PORT = 8080
+var SERVER_IP = "127.0.0.1"
 
 func become_host():
 	print("Become host called")
@@ -29,6 +29,8 @@ func become_host():
 	
 	_add_player_to_game(1)
 	toggle_menu_camera.emit(false)
+	SignalBus.reset_run.emit()
+	multiplayer.peer_connected.connect(_on_client_connected)
 
 func join_lobby():
 	print("Join called")
@@ -45,6 +47,17 @@ func join_lobby():
 	
 	multiplayer.multiplayer_peer = client_peer
 	toggle_menu_camera.emit(false)
+	multiplayer.server_disconnected.connect(_on_host_disconnect)
+
+func _on_host_disconnect() -> void:
+	multiplayer.multiplayer_peer = null
+	become_host()
+
+func _on_client_connected(id: int) -> void:
+	var peer = multiplayer.multiplayer_peer as ENetMultiplayerPeer
+	if peer:
+		var client_ip = peer.get_peer(id).get_remote_address()
+		print("Client connected from IP: ", client_ip)
 
 func _add_player_to_game(id: int):
 	print("Player %s joined the game" % id)
@@ -64,3 +77,13 @@ func _del_player(id: int):
 		return
 	
 	_players_spawn_node.get_node(str(id)).queue_free()
+
+func _get_address_input() -> void:
+	var ip : String = %IPEdit.text
+	var port : String = %PortEdit.text
+	
+	if ip != null and ip != "":
+		SERVER_IP = ip
+	
+	if port != null and port != "":
+		SERVER_PORT = int(port)

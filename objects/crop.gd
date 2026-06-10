@@ -18,5 +18,5 @@ func _process(_delta: float) -> void:
 				_on_harvest(amount)
 				queue_free()
 
-func _on_harvest(amount: int) -> void:
-	crop_farm.on_crop_harvested(position, amount)
+func _on_harvest(amount: int, was_adj: bool = false) -> void:
+	crop_farm.on_crop_harvested(position, amount, was_adj)

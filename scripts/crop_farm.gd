@@ -3,6 +3,7 @@ class_name CropFarm
 
 @export var farm_name : String
 
+
 @export var spawn_area : Rect2
 @export var grid_size : float = 2.0
 
@@ -14,8 +15,8 @@ var current_crop_pos : Dictionary[Vector2, Crop]
 var crop_scene = preload("res://objects/crop.tscn")
 var harvested_scene = preload("res://objects/harvested_crop.tscn")
 
-@export var init_spawn_delay : float = 1.0
-var spawn_delay : float = 1.0
+@export var init_spawn_delay : float = 2.5
+var spawn_delay : float = 2.5
 var time_passed : float = 0.0
 
 func _ready() -> void:
@@ -76,7 +77,7 @@ func _get_random_grid_point_in_shape(rect: Rect2) -> Vector2:
 			
 	return Vector2.ZERO # Fallback if no point is found
 
-func on_crop_harvested(pos: Vector2, amount: int) -> void:
+func on_crop_harvested(pos: Vector2, amount: int, was_adj: bool = false) -> void:
 	if pos in current_crop_pos:
 		current_crop_pos.erase(pos)
 		
@@ -87,3 +88,10 @@ func on_crop_harvested(pos: Vector2, amount: int) -> void:
 			harvested.start_pos = spawn_pos
 			
 			add_child(harvested, true)
+	
+	if not was_adj and GameState.better_farmers:
+		for x in [-grid_size, 0, grid_size]:
+			for y in [-grid_size, 0, grid_size]:
+				var target = Vector2(pos.x + x, pos.y + y)
+				if target in current_crop_pos:
+					current_crop_pos[target]._on_harvest(amount, true)

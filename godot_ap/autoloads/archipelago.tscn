@@ -17,7 +17,6 @@ script = ExtResource("1_41ph8")
 AP_GAME_NAME = "Island King"
 AP_CLIENT_VERSION = SubResource("Resource_pmgvy")
 AP_VERSION = SubResource("Resource_m1v20")
-AP_AUTO_OPEN_CONSOLE = true
 AP_ENABLE_PROGUSEFUL = true
 AP_LOG_COMMUNICATION = true
 AP_LOG_RECIEVED = true

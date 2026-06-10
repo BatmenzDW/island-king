@@ -2,14 +2,21 @@ extends Node2D
 
 @onready var area_2d: Area2D = $Area2D
 
-const COOLDOWN : float = 0.1
+@export var init_cooldown : float = 0.1
+var COOLDOWN : float = 0.1
 
 var time : float = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	SignalBus.reset_run.connect(_reset)
+	SignalBus.mult_processing_speed.connect(_mult_speed)
 
+func _reset() -> void:
+	COOLDOWN = init_cooldown
+
+func _mult_speed(speed: float) -> void:
+	COOLDOWN /= speed
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

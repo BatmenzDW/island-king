@@ -21,6 +21,7 @@ SignalBus="*uid://c1jvlukrixmxd"
 GameState="*uid://dsavpteta30vr"
 MultiplayerManager="*uid://b3t7hrkhituok"
 Archipelago="*uid://c0ovofocoscyg"
+ApManager="*uid://dyhrony6gtc7a"
 
 [display]
 
@@ -77,6 +78,7 @@ Use={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

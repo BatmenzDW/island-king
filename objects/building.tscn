@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://tbeh6pdbbi28"]
+
+[ext_resource type="Script" uid="uid://xow0buruqjjk" path="res://objects/building.gd" id="1_k07no"]
+[ext_resource type="PackedScene" uid="uid://dabrc5rcw5pfw" path="res://objects/door.tscn" id="2_gfisn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k07no"]
+size = Vector2(20.5, 29)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_k07no"]
+properties/0/path = NodePath(".:visible")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("StaticBody2D/CollisionShape2D:disabled")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[node name="Building" type="Sprite2D" unique_id=1358170510]
+script = ExtResource("1_k07no")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=695847492]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2047248636]
+shape = SubResource("RectangleShape2D_k07no")
+
+[node name="Door" parent="." unique_id=1525377132 instance=ExtResource("2_gfisn")]
+exits_main_area = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1255979480]
+replication_config = SubResource("SceneReplicationConfig_k07no")
+
+[editable path="Door"]

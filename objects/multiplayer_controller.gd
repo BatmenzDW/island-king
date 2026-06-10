@@ -6,6 +6,7 @@ const SPEED = 75.0
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hud: Control = $"../../UI/HUD"
 @onready var game: GameManager = $"../.."
+@onready var crown: Sprite2D = $Sprite2D
 
 var direction_hor : float = 0
 var direction_vert : float = 0
@@ -13,11 +14,19 @@ var direction_vert : float = 0
 var do_attack : bool = false
 var anim_attack: bool = false
 
+var in_main_area : bool = true
+
 var is_using : bool = false:
 	set(val):
 		is_using = val
 
-var is_king : bool = false
+var is_king : bool = false:
+	set(val):
+		is_king = val
+		if val:
+			crown.show()
+		else:
+			crown.hide()
 
 var _is_local_player : bool = false:
 	get():
@@ -58,14 +67,23 @@ var _is_local_player : bool = false:
 		if _is_local_player and hud != null:
 			hud.gold_count = count
 
-@export var drop_count_min : int = 1
-@export var drop_count_max : int = 1
+var drop_count_min : int:
+	get():
+		return GameState.drop_count_min
+var drop_count_max : int:
+	get():
+		return GameState.drop_count_max
 
 func _ready() -> void:
+	SignalBus.reset_run.connect(_reset)
 	if multiplayer.get_unique_id() == player_id:
 		$Camera2D.make_current()
 	else:
 		$Camera2D.enabled = false
+
+func _reset() -> void:
+	if multiplayer.is_server() and not in_main_area:
+		position = Vector2(0, 0)
 
 func _apply_animations(_delta: float):
 	if direction_hor == 0 and direction_vert == 0:
@@ -79,7 +97,7 @@ func _apply_animations(_delta: float):
 		sprite.play("use")
 	elif anim_attack:
 		sprite.play("attack")
-		anim_attack = true
+		anim_attack = false
 	else:
 		sprite.play("idle")
 

@@ -5,6 +5,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5jtvd"]
 size = Vector2(19.5, 20)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_566yj"]
+properties/0/path = NodePath(".:visible")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("CollisionShape2D:disabled")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
 [node name="Door" type="Area2D" unique_id=1525377132]
 collision_mask = 2
 script = ExtResource("1_566yj")
@@ -13,5 +21,8 @@ script = ExtResource("1_566yj")
 shape = SubResource("RectangleShape2D_5jtvd")
 
 [node name="TeleportLocation" type="Node2D" parent="." unique_id=433916033]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=25586365]
+replication_config = SubResource("SceneReplicationConfig_566yj")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
