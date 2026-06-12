@@ -11,6 +11,8 @@ var is_game_connected : bool = false
 var SERVER_PORT = 8080
 var SERVER_IP = "18.217.56.223"
 
+var GAME_VERSION : String = ProjectSettings.get_setting("application/config/version", "0.0.0")
+
 func become_host():
 	print("Become host called")
 	
@@ -45,6 +47,7 @@ func join_lobby(p_name: String):
 	
 	if err != OK:
 		is_game_connected = false
+		push_warning("Couldn't connect to server")
 		return
 	
 	multiplayer.multiplayer_peer = client_peer
@@ -54,6 +57,7 @@ func join_lobby(p_name: String):
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 
 func _on_connected_to_server() -> void:
+	_rpc_player_version.rpc_id(1, multiplayer.get_unique_id(), GAME_VERSION)
 	_rpc_player_name.rpc_id(1, multiplayer.get_unique_id(), pl_name)
 
 func _on_client_connected(_id: int) -> void:
@@ -90,5 +94,10 @@ func _rpc_player_name(p_id: int, p_name: String) -> void:
 		break
 	
 	player_names[p_id] = p_name
+
+@rpc("any_peer")
+func _rpc_player_version(p_id: int, ver: String) -> void:
+	if ver != GAME_VERSION:
+		multiplayer.multiplayer_peer.disconnect_peer(p_id)
 
 static var player_names : Dictionary = {}

@@ -21,6 +21,8 @@ var better_farmers : bool = false
 var farms : Dictionary[String, CropFarm] = {}
 var upgrades : Dictionary[String, Upgrade] = {}
 
+var player_name : String
+
 func mult_farms_speed(mult: float, _farms: Array[String] = []) -> void:
 	if len(_farms) == 0:
 		_farms = ["main"]
@@ -30,6 +32,8 @@ func mult_farms_speed(mult: float, _farms: Array[String] = []) -> void:
 			return
 		
 		farms[farm]._on_mult_spawn_rate(mult)
+
+var chat_open : bool = false
 
 var is_server : bool = false
 var ap: bool = false

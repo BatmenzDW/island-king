@@ -20,6 +20,13 @@ func _ready() -> void:
 	input_sneak_sprint = Input.get_axis("Sprint", "Sneak")
 
 func _physics_process(_delta: float) -> void:
+	if GameState.chat_open:
+		input_direction_hor = 0
+		input_direction_vert = 0
+		input_attack_use = 0
+		input_sneak_sprint = 0
+		return
+	
 	input_direction_hor = Input.get_axis("ui_left", "ui_right")
 	input_direction_vert = Input.get_axis("ui_up", "ui_down")
 	input_attack_use = Input.get_axis("Attack", "Use")

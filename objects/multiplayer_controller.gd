@@ -17,6 +17,12 @@ var attack_timer : float = 0.0
 @onready var hud: Control = $"../../UI/HUD"
 @onready var game: GameManager = $"../.."
 @onready var crown: Sprite2D = $Sprite2D
+@onready var cook: AudioStreamPlayer = $Cook
+@onready var crop_break: AudioStreamPlayer = $CropBreak
+@onready var sell: AudioStreamPlayer = $Sell
+@onready var slice: AudioStreamPlayer = $Slice
+@onready var hurt: AudioStreamPlayer = $Hurt
+@onready var attack: AudioStreamPlayer = $Attack
 
 var direction_hor : float = 0
 var direction_vert : float = 0
@@ -52,6 +58,8 @@ var _is_local_player : bool = false:
 	set(value):
 		player_name = value
 		$NameTag/Name.text = value
+		if _is_local_player:
+			GameState.player_name = value
 
 @export var crop_count : int = 0:
 	set(count):
@@ -184,10 +192,13 @@ func _process(delta: float) -> void:
 
 func _deal_damage(target: MultiplayerController) -> void:
 	target.take_damage(1)
+	attack.play()
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
 	regen_timer = REGEN_DELAY
+	
+	hurt.play()
 	
 	if current_health <= 0:
 		_die()
@@ -207,6 +218,8 @@ func harvest_crop() -> int:
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	var amount = rng.randi_range(drop_count_min, drop_count_max)
+	if _is_local_player:
+		crop_break.play()
 	
 	return amount
 
@@ -217,17 +230,23 @@ func slice_crop() -> void:
 	if crop_count >= 4:
 		crop_count -= 4
 		sliced_count += 1
+		if _is_local_player:
+			slice.play()
 
 func cook_crop() -> void:
 	if sliced_count >= 4:
 		sliced_count -= 4
 		cooked_count += 1
+		if _is_local_player:
+			cook.play()
 
 func sell_crop() -> void:
 	if cooked_count >= 1:
 		cooked_count -= 1
 		var amount = game.on_crop_sell()
 		gold_count += amount
+		if _is_local_player:
+			sell.play()
 
 func spend_gold(amount: int) -> bool:
 	if gold_count >= amount:

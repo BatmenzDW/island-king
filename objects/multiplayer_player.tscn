@@ -10,6 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://bgi051wkf6xhi" path="res://assets/sprites/Attack_Up_3.png" id="6_j6gdg"]
 [ext_resource type="Texture2D" uid="uid://dm7gofg4a474x" path="res://assets/sprites/Use_Up_3.png" id="6_wvp6w"]
 [ext_resource type="Texture2D" uid="uid://dn40bro2w6jgs" path="res://assets/sprites/Crown.png" id="10_h2hq7"]
+[ext_resource type="AudioStream" uid="uid://b8bgdcfnkp65c" path="res://assets/sfx/cook.mp3" id="11_fo03f"]
+[ext_resource type="AudioStream" uid="uid://duias0vwryium" path="res://assets/sfx/crop_break.mp3" id="12_yxagl"]
+[ext_resource type="AudioStream" uid="uid://bbh3rgiq1qwob" path="res://assets/sfx/sell.mp3" id="13_2vax3"]
+[ext_resource type="AudioStream" uid="uid://cca4y1hd6bcrj" path="res://assets/sfx/slice.mp3" id="14_pogp4"]
+[ext_resource type="AudioStream" uid="uid://dophfn1h2hbf3" path="res://assets/sfx/hurt.mp3" id="15_sbst4"]
+[ext_resource type="AudioStream" uid="uid://w7yu4pbh3dgq" path="res://assets/sfx/attack.mp3" id="16_moran"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_m6ijf"]
 properties/0/path = NodePath(".:player_id")
@@ -205,3 +211,21 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Cook" type="AudioStreamPlayer" parent="." unique_id=8574394]
+stream = ExtResource("11_fo03f")
+
+[node name="CropBreak" type="AudioStreamPlayer" parent="." unique_id=434300475]
+stream = ExtResource("12_yxagl")
+
+[node name="Sell" type="AudioStreamPlayer" parent="." unique_id=2135343959]
+stream = ExtResource("13_2vax3")
+
+[node name="Slice" type="AudioStreamPlayer" parent="." unique_id=167802893]
+stream = ExtResource("14_pogp4")
+
+[node name="Hurt" type="AudioStreamPlayer" parent="." unique_id=1566707594]
+stream = ExtResource("15_sbst4")
+
+[node name="Attack" type="AudioStreamPlayer" parent="." unique_id=1691667462]
+stream = ExtResource("16_moran")

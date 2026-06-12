@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cjt3e20au4bht" path="res://objects/cutting_board.tscn" id="8_o41xh"]
 [ext_resource type="PackedScene" uid="uid://cyeb88pxt0yn7" path="res://objects/campfire.tscn" id="9_7ra1j"]
 [ext_resource type="TileSet" uid="uid://cbang2taf63f2" path="res://assets/interior_tileset1.tres" id="9_uwsrr"]
+[ext_resource type="Script" uid="uid://cotdrny4j3xpk" path="res://scripts/chat_controller.gd" id="9_yrd5d"]
 [ext_resource type="PackedScene" uid="uid://cnsy7k5p5rxks" path="res://objects/merchant.tscn" id="11_goyjt"]
 [ext_resource type="PackedScene" uid="uid://whhj484u54a3" path="res://objects/sign.tscn" id="12_o7cbl"]
 [ext_resource type="Script" uid="uid://be6am7f8pa732" path="res://objects/wall_removable.gd" id="15_8kenn"]
@@ -23,6 +24,8 @@
 [ext_resource type="Texture2D" uid="uid://by5luoc8rjpbg" path="res://assets/sprites/Teleporter.png" id="19_ibgdi"]
 [ext_resource type="PackedScene" uid="uid://tbeh6pdbbi28" path="res://objects/building.tscn" id="20_dg73d"]
 [ext_resource type="Script" uid="uid://pkr7vgr6gojp" path="res://scripts/server_archipelago.gd" id="21_6qfb6"]
+[ext_resource type="AudioStream" uid="uid://hvao0ij5ib38" path="res://assets/sfx/firework.mp3" id="24_8dt1a"]
+[ext_resource type="AudioStream" uid="uid://blfkm64ot6sfm" path="res://assets/sfx/upgrade.mp3" id="25_yvbbh"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_yy8o1"]
 properties/0/path = NodePath(".:kingdom_money")
@@ -419,6 +422,54 @@ bbcode_enabled = true
 text = "0.0 Coins"
 fit_content = true
 horizontal_alignment = 1
+
+[node name="Chat" type="Control" parent="UI" unique_id=708554649]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_yrd5d")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Chat" unique_id=1810824121]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 436.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ColorRect" type="ColorRect" parent="UI/Chat/MarginContainer" unique_id=1833499354]
+layout_mode = 2
+color = Color(0.18717614, 0.18717614, 0.18717614, 0.54901963)
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Chat/MarginContainer" unique_id=1545941170]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ChatText" type="RichTextLabel" parent="UI/Chat/MarginContainer/MarginContainer" unique_id=1661225362]
+layout_mode = 2
+bbcode_enabled = true
+scroll_following = true
+
+[node name="MarginContainer2" type="MarginContainer" parent="UI/Chat" unique_id=1088527162]
+layout_mode = 0
+offset_top = 421.0
+offset_right = 1153.0
+offset_bottom = 474.0
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 10
+
+[node name="LineEdit" type="LineEdit" parent="UI/Chat/MarginContainer2" unique_id=377916924]
+layout_mode = 2
+virtual_keyboard_enabled = false
 
 [node name="IslandTileMap" type="TileMapLayer" parent="." unique_id=2043637303]
 texture_filter = 1
@@ -1745,8 +1796,16 @@ position = Vector2(16015, 36)
 unique_name_in_owner = true
 script = ExtResource("21_6qfb6")
 
+[node name="Fireworks" type="AudioStreamPlayer" parent="." unique_id=127569947]
+stream = ExtResource("24_8dt1a")
+
+[node name="Upgrade" type="AudioStreamPlayer" parent="." unique_id=1930179678]
+stream = ExtResource("25_yvbbh")
+
 [connection signal="pressed" from="UI/MultiplayerHUD/Panel/VBoxContainer/Host" to="." method="become_host"]
 [connection signal="pressed" from="UI/MultiplayerHUD/Panel/VBoxContainer/Join" to="." method="join_lobby"]
+[connection signal="editing_toggled" from="UI/Chat/MarginContainer2/LineEdit" to="UI/Chat" method="_on_line_edit_editing_toggled"]
+[connection signal="text_submitted" from="UI/Chat/MarginContainer2/LineEdit" to="UI/Chat" method="_on_line_edit_text_submitted"]
 
 [editable path="Buildings/Doors/Door"]
 [editable path="Buildings/Doors/Door2"]

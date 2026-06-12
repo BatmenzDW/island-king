@@ -4,6 +4,7 @@ class_name GameManager
 @onready var hud: Control = $UI/HUD
 @onready var players: Node2D = $Players
 @onready var king_spawn: Node2D = $KingSpawn
+@onready var fireworks: AudioStreamPlayer = $Fireworks
 
 @export var init_money : float = 25.0
 var kingdom_money : float = 0:
@@ -59,7 +60,16 @@ func _ready() -> void:
 	reset()
 	SignalBus.reset_run.connect(_reset_run)
 	SignalBus.upgrade_unlocked.connect(_filler_recieved)
+	SignalBus.upgrade_purchased.connect(_upgrade_purchased)
+	
 	server_archipelago = %ServerArchipelago
+
+func _upgrade_purchased(_upgrade: String) -> void:
+	_client_play_upgrade_sfx.rpc()
+
+@rpc()
+func _client_play_upgrade_sfx() -> void:
+	$Upgrade.play()
 
 func _filler_recieved(filler: String) -> void:
 	if filler not in filler_items:
@@ -75,7 +85,7 @@ func _reset_run() -> void:
 		plyrs[0].global_position = king_spawn.global_position
 		%ServerArchipelago.on_new_king(plyrs[0].player_id)
 	elif len(plyrs) > 0:
-		var king = plyrs.pick_random()
+		var king = plyrs.filter(func(p): return not p.is_king).pick_random()
 		for p in plyrs:
 			if p == king:
 				p.is_king = true
@@ -131,8 +141,13 @@ func _calculate_gold_return() -> int:
 	return rtrn
 
 func _on_victory(_ending: String) -> void:
+	_client_play_fireworks_sfx.rpc()
 	await get_tree().create_timer(5.0).timeout
 	SignalBus.reset_run.emit()
+
+@rpc()
+func _client_play_fireworks_sfx() -> void:
+	fireworks.play()
 
 var filler_items : Dictionary[String, Callable] = {
 	"50 Coins": func(): kingdom_money += 50,
