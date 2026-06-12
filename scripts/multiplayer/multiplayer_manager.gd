@@ -9,7 +9,7 @@ var is_host : bool = false
 var is_game_connected : bool = false
 
 var SERVER_PORT = 8080
-var SERVER_IP = "127.0.0.1"
+var SERVER_IP = "18.217.56.223"
 
 func become_host():
 	print("Become host called")
@@ -27,12 +27,14 @@ func become_host():
 	multiplayer.peer_connected.connect(_add_player_to_game)
 	multiplayer.peer_disconnected.connect(_del_player)
 	
-	_add_player_to_game(1)
-	toggle_menu_camera.emit(false)
-	SignalBus.reset_run.emit()
+	if not GameState.is_server:
+		_add_player_to_game(1)
+	#toggle_menu_camera.emit(false)
 	multiplayer.peer_connected.connect(_on_client_connected)
 
-func join_lobby():
+var pl_name : String
+
+func join_lobby(p_name: String):
 	print("Join called")
 	
 	is_host = false
@@ -47,17 +49,16 @@ func join_lobby():
 	
 	multiplayer.multiplayer_peer = client_peer
 	toggle_menu_camera.emit(false)
-	multiplayer.server_disconnected.connect(_on_host_disconnect)
+	
+	pl_name = p_name
+	multiplayer.connected_to_server.connect(_on_connected_to_server)
 
-func _on_host_disconnect() -> void:
-	multiplayer.multiplayer_peer = null
-	become_host()
+func _on_connected_to_server() -> void:
+	_rpc_player_name.rpc_id(1, multiplayer.get_unique_id(), pl_name)
 
-func _on_client_connected(id: int) -> void:
-	var peer = multiplayer.multiplayer_peer as ENetMultiplayerPeer
-	if peer:
-		var client_ip = peer.get_peer(id).get_remote_address()
-		print("Client connected from IP: ", client_ip)
+func _on_client_connected(_id: int) -> void:
+	if $"../GameController/Players".get_child_count() == 1:
+		SignalBus.reset_run.emit()
 
 func _add_player_to_game(id: int):
 	print("Player %s joined the game" % id)
@@ -78,12 +79,16 @@ func _del_player(id: int):
 	
 	_players_spawn_node.get_node(str(id)).queue_free()
 
-func _get_address_input() -> void:
-	var ip : String = %IPEdit.text
-	var port : String = %PortEdit.text
+@rpc("any_peer")
+func _rpc_player_name(p_id: int, p_name: String) -> void:
+	var plyrs = $"../GameController/Players".get_children()
+	for p in plyrs:
+		if p.player_id != p_id:
+			continue
+		
+		p.player_name = p_name
+		break
 	
-	if ip != null and ip != "":
-		SERVER_IP = ip
-	
-	if port != null and port != "":
-		SERVER_PORT = int(port)
+	player_names[p_id] = p_name
+
+static var player_names : Dictionary = {}

@@ -21,7 +21,6 @@ var better_farmers : bool = false
 var farms : Dictionary[String, CropFarm] = {}
 var upgrades : Dictionary[String, Upgrade] = {}
 
-
 func mult_farms_speed(mult: float, _farms: Array[String] = []) -> void:
 	if len(_farms) == 0:
 		_farms = ["main"]
@@ -31,3 +30,28 @@ func mult_farms_speed(mult: float, _farms: Array[String] = []) -> void:
 			return
 		
 		farms[farm]._on_mult_spawn_rate(mult)
+
+var is_server : bool = false
+var ap: bool = false
+var web: bool = false
+
+func _ready() -> void:
+	var arguments = {}
+	for argument in OS.get_cmdline_args():
+		if argument.contains("="):
+			var key_value = argument.split("=")
+			arguments[key_value[0].trim_prefix("--")] = key_value[1]
+		else:
+			# Options without an argument will be present in the dictionary,
+			# with the value set to an empty string.
+			arguments[argument.trim_prefix("--")] = ""
+	
+	if OS.has_feature("web") or "web" in arguments:
+		web = true
+		return
+	
+	if OS.has_feature("server") or "server" in arguments:
+		is_server = true
+		MultiplayerManager.become_host()
+	if OS.has_feature("ap") or "ap" in arguments:
+		ap = true

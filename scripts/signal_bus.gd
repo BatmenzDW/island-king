@@ -22,3 +22,9 @@ signal upgrade_purchased(upgrade: String)
 signal upgrade_unlocked(upgrade: String)
 
 signal mult_processing_speed(speed: float)
+
+signal mult_sell_speed(speed: float)
+
+signal mult_player_speed(speed: float)
+
+signal victory(ending: String)

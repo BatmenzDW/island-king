@@ -50,6 +50,7 @@ var drop_count_max : int:
 	get():
 		return GameState.drop_count_max
 
+static var server_archipelago : ServerArchipelago
 
 var time: float = 0.0
 
@@ -57,6 +58,8 @@ var time: float = 0.0
 func _ready() -> void:
 	reset()
 	SignalBus.reset_run.connect(_reset_run)
+	SignalBus.upgrade_unlocked.connect(_filler_recieved)
+	server_archipelago = %ServerArchipelago
 
 func _filler_recieved(filler: String) -> void:
 	if filler not in filler_items:
@@ -68,9 +71,18 @@ func _reset_run() -> void:
 	reset()
 	var plyrs = players.get_children()
 	if len(plyrs) == 1:
+		plyrs[0].is_king = true
 		plyrs[0].global_position = king_spawn.global_position
-	else:
-		plyrs.pick_random()
+		%ServerArchipelago.on_new_king(plyrs[0].player_id)
+	elif len(plyrs) > 0:
+		var king = plyrs.pick_random()
+		for p in plyrs:
+			if p == king:
+				p.is_king = true
+				p.global_position = king_spawn.global_position
+				%ServerArchipelago.on_new_king(p.player_id)
+			else:
+				p.is_king = false
 
 func reset() -> void:
 	kingdom_money = init_money
@@ -96,8 +108,11 @@ func become_host():
 
 func join_lobby():
 	print("Join pressed")
+	if %NameEdit.text.is_empty():
+		return
+	
 	%MultiplayerHUD.hide()
-	MultiplayerManager.join_lobby()
+	MultiplayerManager.join_lobby(%NameEdit.text)
 
 
 func on_crop_sell() -> int:
@@ -115,7 +130,10 @@ func _calculate_gold_return() -> int:
 	
 	return rtrn
 
+func _on_victory(_ending: String) -> void:
+	await get_tree().create_timer(5.0).timeout
+	SignalBus.reset_run.emit()
 
 var filler_items : Dictionary[String, Callable] = {
-	
+	"50 Coins": func(): kingdom_money += 50,
 }

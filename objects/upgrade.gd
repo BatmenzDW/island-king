@@ -14,12 +14,17 @@ var purchase_lambda : Callable
 	set(val):
 		locked = val
 		if not val and not purchased and sprite != null:
-			sprite.texture = SIGN_AVALIBLE
+			if ap_locked:
+				sprite.play("locked")
+			else:
+				sprite.play("avalible")
+		elif val and sprite != null:
+			sprite.play("locked")
 
 @export var prereq : String = ""
 
 @export var ap_start_locked : bool = false
-var ap_locked : bool = false
+@export var ap_locked : bool = false
 
 var upgrade_cost_description : String = "":
 	get():
@@ -35,7 +40,7 @@ var funding_rate : int = 1
 	set(val):
 		purchased = val
 		if val:
-			sprite.texture = SIGN_INFO
+			sprite.play("info")
 
 const SIGN_AVALIBLE = preload("uid://dmqanl8gk20gw")
 const SIGN_INFO = preload("uid://b7e1g0eah1fup")
@@ -60,7 +65,7 @@ func _get_cost_type_name(type: CostType) -> String:
 			return "NULL"
 
 @onready var area_2d: Area2D = $Area2D
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $Sprite2D
 @onready var collision: CollisionShape2D = $Area2D/CollisionShape2D
 
 const COOLDOWN : float = 0.1
@@ -104,19 +109,23 @@ func _on_upgrade_unlocked(upgrade: String) -> void:
 	if upgrade != upgrade_name:
 		return
 	
-	ap_locked = false
+	ap_locked = not _is_ap_unlocked()
+	
+	if ap_locked:
+		sprite.play("locked")
+		return
 	
 	if not locked and not purchased:
-		sprite.texture = SIGN_AVALIBLE
+		sprite.play("avalible")
 
 func reset() -> void:
 	purchased = false
 	locked = init_locked
 	
-	if locked or ap_locked:
-		sprite.texture = SIGN_LOCKED
+	if locked or not _is_ap_unlocked():
+		sprite.play("locked")
 	else:
-		sprite.texture = SIGN_AVALIBLE
+		sprite.play("avalible")
 	
 	if not start_hidden:
 		show()
@@ -128,8 +137,8 @@ func reset() -> void:
 func unlock() -> void:
 	locked = false
 	
-	if not ap_locked and not purchased:
-		sprite.texture = SIGN_AVALIBLE
+	if _is_ap_unlocked() and not purchased:
+		sprite.play("avalible")
 
 func ap_reset() -> void:
 	ap_locked = ap_start_locked
@@ -178,17 +187,20 @@ func _process(delta: float) -> void:
 func on_upgrade_purchased() -> void:
 	if not multiplayer.is_server():
 		return
-	sprite.texture = SIGN_INFO
+	#sprite.texture = SIGN_INFO
 	purchase_lambda.call()
 	purchased = true
 	SignalBus.upgrade_purchased.emit(upgrade_name)
 
 func on_hover_upgrade() -> void:
+	if multiplayer.is_server():
+		return
+	
 	var name_text = upgrade_name
 	var desc_text = upgrade_description
 	var cost_text = upgrade_cost_description
 	
-	if locked:
+	if locked or ap_locked:
 		name_text = "[color=red]Locked: %s[/color]" % upgrade_name
 		desc_text = "[color=red]%s[/color]" % upgrade_description
 	elif purchased:
@@ -219,17 +231,26 @@ func _on_area_2d_body_exited(body: Node2D) -> void:
 	if body is MultiplayerController and body._is_local_player:
 		on_unhover_upgrade()
 
+func _is_ap_unlocked() -> bool:
+	if not GameState.is_ap:
+		return true
+	if not ap_start_locked:
+		return true
+	if upgrade_name in ServerArchipelago.server_received_items:
+		return true
+	
+	return false
 
 var upgrades : Dictionary[String, UpgradeData] = {
 	"Faster Crop Spawn Rate": UpgradeData.create(25.0, CostType.Coins, "Increases crop spawn rate 50%", func(): GameState.mult_farms_speed(1.5)),
-	"Economics Room": UpgradeData.create(10.0, CostType.Coins, "Unlocks [b][s]three[/s]two[/b] other upgrades in the castle.", func(): SignalBus.disable_wall.emit("Economics Room")),
+	"Economics Room": UpgradeData.create(10.0, CostType.Coins, "Unlocks two other upgrades in the castle.", func(): SignalBus.disable_wall.emit("Economics Room")),
 	"Faster Money Generation": UpgradeData.create(5.0, CostType.Coins, "Decreases the time it takes to automatically generate money by 67%.", func(): GameState.money_gen_delay *= (1.0/3.0)),
 	"Better Sell Deals": UpgradeData.create(10.0, CostType.Coins, "Increases the crop sell price by 0.15.", func(): GameState.current_sell_value += 0.15),
-	"Castle Backyard": UpgradeData.create(12.0, CostType.Coins, "Opens the side of the castle.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Castle Backyard"); SignalBus.reveal_upgrade.emit("Castle Backyard")),
-	"Castle Basement": UpgradeData.create(24.0, CostType.Coins, "Adds a basement to the backyard.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Castle Basement")),
-	"Upgrade Town Center": UpgradeData.create(40.0, CostType.Coins, "Adds 3 new buildings to the town.", func(): SignalBus.build_building.emit("Town Center")),
-	"Unlock Shop (King)": UpgradeData.create(5.0, CostType.Coins, "Unlocks the shop.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Shop")),
-	"Unlock Shop": UpgradeData.create(100.0, CostType.Gold, "Unlocks the shop.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Shop")),
+	"Unlock Backyard": UpgradeData.create(12.0, CostType.Coins, "Opens the side of the castle.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Castle Backyard"); SignalBus.reveal_upgrade.emit("Castle Backyard")),
+	"Unlock Basement": UpgradeData.create(24.0, CostType.Coins, "Adds a basement to the backyard.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Castle Basement")),
+	"Town Center Upgrade": UpgradeData.create(40.0, CostType.Coins, "Adds 3 new buildings to the town.", func(): SignalBus.build_building.emit("Town Center")),
+	"Open Shop (King)": UpgradeData.create(5.0, CostType.Coins, "Unlocks the shop.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Shop")),
+	"Open Shop": UpgradeData.create(100.0, CostType.Gold, "Unlocks the shop.", func(): self.hide(); collision.disabled = true; SignalBus.enable_door.emit("Shop")),
 	"Crop Fertilizer": UpgradeData.create(24.0, CostType.Coins, "Increases crop spawn rate by 50%.", func(): GameState.mult_farms_speed(1.5)),
 	"Faster Processing": UpgradeData.create(25.0, CostType.Coins, "Quintuples max processing speeds.", func(): SignalBus.mult_processing_speed.emit(4.0)),
 	"Intensive Research": UpgradeData.create(45.0, CostType.Coins, "Adds three additional upgrades to one of the houses.", func(): SignalBus.reveal_upgrade.emit("Intensive Research")),
@@ -244,7 +265,20 @@ var upgrades : Dictionary[String, UpgradeData] = {
 	"Better Farmers": UpgradeData.create(125.0, CostType.Coins, "Breaking crops will break all adjacent crops.", func(): GameState.better_farmers = true),
 	"Incredibly Fast Growth": UpgradeData.create(125.0, CostType.Coins, "Increases crop spawn rate by 100%.", func(): GameState.mult_farms_speed(2.0)),
 	"Bigger Bunker": UpgradeData.create(75.0, CostType.Coins, "Expands the underground bunker, also adding another area to get upgrades in.", func(): SignalBus.disable_wall.emit("Bigger Bunker")),
-	"Expansion Island": UpgradeData.create(350.0, CostType.Coins, "[s]Adds a teleporter to a new island.[/s]\nThis is the End of this Alpha version.", func(): SignalBus.enable_door.emit("Expansion Island")),
+	"Expansion Island": UpgradeData.create(350.0, CostType.Coins, "Adds a teleporter to a new island.", func(): SignalBus.enable_door.emit("Expansion Island")),
+	"Morale Boost": UpgradeData.create(200.0, CostType.Coins, "Increases everyone's speed by 20%.", func(): SignalBus.mult_player_speed.emit(1.2)),
+	"Lower Shipping Taxes": UpgradeData.create(200.0, CostType.Coins, "Increases the melon sell price by 0.3.", func(): GameState.current_sell_value += 0.3),
+	"Even Better Harvesting": UpgradeData.create(200.0, CostType.Coins, "Increases melons per melon from 3-7 to 5-9.", func(): GameState.drop_count_min += 2; GameState.drop_count_max += 2),
+	"Faster Selling": UpgradeData.create(150.0, CostType.Coins, "Quintuples crop sell speed.", func(): SignalBus.mult_sell_speed.emit(4.0)),
+	"Farming Island": UpgradeData.create(400.0, CostType.Coins, "Adds a teleporter to a new farming island.", func(): SignalBus.enable_door.emit("Farming Island")),
+	
+	"Deluxe Farm": UpgradeData.create(300.0, CostType.Coins, "Increases this island's crop spawn rate by 150%.", func(): GameState.mult_farms_speed(2.5, ["deluxe"])),
+	"Quality Control": UpgradeData.create(300.0, CostType.Coins, "Increases the crop sell price by 0.5.", func(): GameState.current_sell_value += 0.5),
+	"Better Filters": UpgradeData.create(225.0, CostType.Coins, "Increases the crop sell price by 0.2.", func(): GameState.current_sell_value += 0.2),
+	"Fortified Island": UpgradeData.create(600.0, CostType.Coins, "Unlocks the third island, this one containing a small castle.", func(): SignalBus.enable_door.emit("Fortified Island")),
+	
+	"Mysterious Island": UpgradeData.create(800.0, CostType.Coins, "Unlocks the fourth island.", func(): SignalBus.enable_door.emit("Mysterious Island")),
+	"The Grand Finale": UpgradeData.create(0.0, CostType.Coins, "It has all come to this...", func(): SignalBus.victory.emit("True Urban")),
 }
 
 class UpgradeData:

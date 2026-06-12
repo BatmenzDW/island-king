@@ -13,6 +13,7 @@
 		if not parts_cont:
 			return spacing
 		return parts_cont.get_theme_constant(&"separation")
+@export var scroll_to_bottom_on_new_message: bool = false
 
 static var console_label_fonts: FontStorage
 
@@ -53,7 +54,7 @@ func pop_dropdown(target: Control) -> VBoxContainer:
 	target.resized.connect(resize_window)
 	window.add_child(vbox)
 	window.ready.connect(resize_window)
-	#window.tree_exiting.connect(func(): resized.disconnect(resize_window))
+	window.tree_exiting.connect(target.resized.disconnect.bind(resize_window))
 	add_child.call_deferred(window) # Defer adding it, to allow caller to add things to the vbox
 	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
 	return vbox
@@ -131,7 +132,7 @@ static func make_location(id: int, data: DataCache) -> ConsoleLabel:
 	return make_text(data.get_loc_name(id), "", AP.ComplexColor.as_special(AP.SpecialColor.LOCATION))
 static func make_item(id: int, flags: int, data: DataCache) -> ConsoleLabel:
 	var ttip = "Type: %s" % AP.get_item_classification(flags)
-	var color := AP.ComplexColor.as_rich(AP.get_item_class_color(flags))
+	var color := AP.ComplexColor.as_special(AP.get_item_class_color(flags))
 	return make_text(data.get_item_name(id), ttip, color)
 
 static func make_player(id: int) -> ConsoleLabel:
@@ -158,6 +159,12 @@ func _ready():
 		v.bold = true
 		v.italic = true
 		return
+	if parts_cont:
+		parts_cont.child_entered_tree.connect(_on_new_message)
+
+func _on_new_message(_node: Node) -> void:
+	if scroll_to_bottom_on_new_message:
+		scroll_bottom()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_THEME_CHANGED:
@@ -170,7 +177,8 @@ func _get_mouse_pos() -> Vector2:
 	return get_viewport().get_mouse_position() - global_position + Util.MOUSE_OFFSET
 
 func scroll_bottom() -> void:
-	scroll_cont.scroll_vertical = 9999999
+	var bar := scroll_cont.get_v_scroll_bar()
+	bar.value = bar.max_value
 func scroll_top() -> void:
 	scroll_cont.scroll_vertical = 0
 func scroll_by_abs(amnt: float) -> void:
@@ -192,6 +200,9 @@ func _gui_input(event):
 					scroll_by_abs(-size.y)
 				KEY_PAGEDOWN:
 					scroll_by_abs(size.y)
+				_:
+					return
+			accept_event()
 
 func queue_locked_redraw() -> void:
 	is_max_scroll = false

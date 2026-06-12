@@ -46,6 +46,8 @@ func _on_mult_spawn_rate(mult: float) -> void:
 func spawn_crops():
 	for i in range(spawn_count):
 		var spawn_pos = _get_random_grid_point_in_shape(spawn_area)
+		if spawn_pos in current_crop_pos:
+			continue
 		var crop = crop_scene.instantiate()
 		crop.visible = false
 		
