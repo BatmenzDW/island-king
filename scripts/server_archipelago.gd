@@ -15,6 +15,8 @@ func _process(_delta: float) -> void:
 	pass
 
 func _upgrade_purchased_server(upgrade: String) -> void:
+	if current_ap_target_player < 0:
+		return
 	_upgrade_purchased.rpc_id(current_ap_target_player, upgrade)
 
 @rpc()
@@ -60,7 +62,7 @@ func _rpc_receive_deathlink(_source: String, _cause: String, _json: Dictionary) 
 
 @rpc("authority")
 func _rpc_send_deathlink(_source: String, _cause: String, _json: Dictionary) -> void:
-	pass
+	Archipelago.conn.send_deathlink(_cause)
 
 func notify_server_receive_bounce() -> void:
 	pass

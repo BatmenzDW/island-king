@@ -214,15 +214,20 @@ vertical_alignment = 1
 
 [node name="Cook" type="AudioStreamPlayer" parent="." unique_id=8574394]
 stream = ExtResource("11_fo03f")
+volume_db = -5.0
 
 [node name="CropBreak" type="AudioStreamPlayer" parent="." unique_id=434300475]
 stream = ExtResource("12_yxagl")
+volume_db = -5.0
+max_polyphony = 5
 
 [node name="Sell" type="AudioStreamPlayer" parent="." unique_id=2135343959]
 stream = ExtResource("13_2vax3")
 
 [node name="Slice" type="AudioStreamPlayer" parent="." unique_id=167802893]
 stream = ExtResource("14_pogp4")
+volume_db = -5.0
+pitch_scale = 1.5
 
 [node name="Hurt" type="AudioStreamPlayer" parent="." unique_id=1566707594]
 stream = ExtResource("15_sbst4")

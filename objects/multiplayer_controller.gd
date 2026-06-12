@@ -257,7 +257,8 @@ func _client_play_sound(sound: String) -> void:
 func _rpc_play_sound(sound: String) -> void:
 	match sound:
 		"cook":
-			cook.play()
+			if cook.get_playback_position() == 0.0:
+				cook.play()
 		"cropbreak":
 			crop_break.play()
 		"sell":

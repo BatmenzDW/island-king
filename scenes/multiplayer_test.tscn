@@ -1802,6 +1802,7 @@ stream = ExtResource("24_8dt1a")
 
 [node name="Upgrade" type="AudioStreamPlayer" parent="." unique_id=1930179678]
 stream = ExtResource("25_yvbbh")
+volume_db = -5.0
 
 [connection signal="editing_toggled" from="UI/MultiplayerHUD/Panel/VBoxContainer/NameEdit" to="UI/Chat" method="_on_name_edit_editing_toggled"]
 [connection signal="pressed" from="UI/MultiplayerHUD/Panel/VBoxContainer/Host" to="." method="become_host"]
