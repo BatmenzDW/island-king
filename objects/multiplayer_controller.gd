@@ -218,8 +218,7 @@ func harvest_crop() -> int:
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	var amount = rng.randi_range(drop_count_min, drop_count_max)
-	if _is_local_player:
-		_client_play_sound("cropbreak")
+	_client_play_sound("cropbreak")
 	
 	return amount
 
@@ -230,23 +229,20 @@ func slice_crop() -> void:
 	if crop_count >= 4:
 		crop_count -= 4
 		sliced_count += 1
-		if _is_local_player:
-			_client_play_sound("slice")
+		_client_play_sound("slice")
 
 func cook_crop() -> void:
 	if sliced_count >= 4:
 		sliced_count -= 4
 		cooked_count += 1
-		if _is_local_player:
-			_client_play_sound("cook")
+		_client_play_sound("cook")
 
 func sell_crop() -> void:
 	if cooked_count >= 1:
 		cooked_count -= 1
 		var amount = game.on_crop_sell()
 		gold_count += amount
-		if _is_local_player:
-			_client_play_sound("sell")
+		_client_play_sound("sell")
 
 func spend_gold(amount: int) -> bool:
 	if gold_count >= amount:
