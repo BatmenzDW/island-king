@@ -192,13 +192,13 @@ func _process(delta: float) -> void:
 
 func _deal_damage(target: MultiplayerController) -> void:
 	target.take_damage(1)
-	attack.play()
+	_client_play_sound("attack")
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
 	regen_timer = REGEN_DELAY
 	
-	hurt.play()
+	_client_play_sound("hurt")
 	
 	if current_health <= 0:
 		_die()
@@ -219,7 +219,7 @@ func harvest_crop() -> int:
 	rng.randomize()
 	var amount = rng.randi_range(drop_count_min, drop_count_max)
 	if _is_local_player:
-		crop_break.play()
+		_client_play_sound("cropbreak")
 	
 	return amount
 
@@ -231,14 +231,14 @@ func slice_crop() -> void:
 		crop_count -= 4
 		sliced_count += 1
 		if _is_local_player:
-			slice.play()
+			_client_play_sound("slice")
 
 func cook_crop() -> void:
 	if sliced_count >= 4:
 		sliced_count -= 4
 		cooked_count += 1
 		if _is_local_player:
-			cook.play()
+			_client_play_sound("cook")
 
 func sell_crop() -> void:
 	if cooked_count >= 1:
@@ -246,10 +246,29 @@ func sell_crop() -> void:
 		var amount = game.on_crop_sell()
 		gold_count += amount
 		if _is_local_player:
-			sell.play()
+			_client_play_sound("sell")
 
 func spend_gold(amount: int) -> bool:
 	if gold_count >= amount:
 		gold_count -= amount
 		return true
 	return false
+
+func _client_play_sound(sound: String) -> void:
+	_rpc_play_sound.rpc_id(player_id, sound)
+
+@rpc()
+func _rpc_play_sound(sound: String) -> void:
+	match sound:
+		"cook":
+			cook.play()
+		"cropbreak":
+			crop_break.play()
+		"sell":
+			sell.play()
+		"slice":
+			slice.play()
+		"hurt":
+			hurt.play()
+		"attack":
+			attack.play()
