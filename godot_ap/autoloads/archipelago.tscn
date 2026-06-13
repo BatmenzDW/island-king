@@ -16,7 +16,7 @@ build = 7
 [node name="AP" type="Node" unique_id=2080204856]
 script = ExtResource("1_41ph8")
 AP_GAME_NAME = "Island King"
-AP_GAME_TAGS = Array[String](["RingLink"])
+AP_GAME_TAGS = Array[String](["RingLink", "DeathLink"])
 AP_CLIENT_VERSION = SubResource("Resource_pmgvy")
 AP_VERSION = SubResource("Resource_m1v20")
 AP_PRINT_ITEMS_ON_CONNECT = true

@@ -13,6 +13,9 @@ var SERVER_IP = "18.217.56.223"
 
 var GAME_VERSION : String = ProjectSettings.get_setting("application/config/version", "0.0.0")
 
+func _ready() -> void:
+	print("Island King v" + GAME_VERSION)
+
 func become_host():
 	print("Become host called")
 	
@@ -33,6 +36,8 @@ func become_host():
 		_add_player_to_game(1)
 	#toggle_menu_camera.emit(false)
 	multiplayer.peer_connected.connect(_on_client_connected)
+
+static var players : Dictionary[int, MultiplayerController] = {}
 
 var pl_name : String
 
@@ -72,6 +77,8 @@ func _add_player_to_game(id: int):
 	player_to_add.name = str(id)
 	
 	_players_spawn_node.add_child(player_to_add, true)
+	
+	players[id] = player_to_add
 	
 	if id == 1 and is_host:
 		player_to_add.is_king = true

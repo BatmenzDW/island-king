@@ -8,6 +8,14 @@ var server_archipelago: ServerArchipelago:
 	get():
 		return GameManager.server_archipelago
 
+var is_deathlink : bool:
+	get():
+		return "deathlink" in connection.slot_data and (connection.slot_data["deathlink"] or connection.slot_data["deathlink"] == "true")
+
+var is_ringlink : bool:
+	get():
+		return "ringlink" in connection.slot_data and (connection.slot_data["ringlink"] or connection.slot_data["ringlink"] == "true")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Archipelago.connected.connect(_on_connected)
@@ -41,7 +49,7 @@ var last_sent_ringlink_time : float
 ## Emitted when a `Bounce` packet is received.
 func _on_bounce(json: Dictionary) -> void:
 	var tags: Array = json.get("tags", [])
-	if tags.has("RingLink"):
+	if tags.has("RingLink") and is_ringlink:
 		var tstamp: float = json["data"].get("time", 0.0)
 		if absf(tstamp - last_sent_ringlink_time) < 0.5:
 			return # Skip traps from self
@@ -59,7 +67,7 @@ func _on_rignlink(source: String, amount: int) -> void:
 	ChatController.print_text_to_chat("%s %s coins." % [desc, amount], "AP:RingLink][%s" % source)
 
 func send_ringlink(amount: float) -> void:
-	if not Archipelago.is_ap_connected():
+	if not Archipelago.is_ap_connected() or not is_ringlink:
 		return
 	
 	last_sent_ringlink_time = Time.get_unix_time_from_system()

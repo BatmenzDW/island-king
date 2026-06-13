@@ -32,6 +32,14 @@ static var server_slot_data : Dictionary
 static var server_slot_locations: Dictionary[int, bool]
 static var server_received_items : Array[String]
 
+static var is_deathlink : bool:
+	get():
+		return "deathlink" in server_slot_data and (server_slot_data["deathlink"] or server_slot_data["deathlink"] == "true")
+
+static var is_ringlink : bool:
+	get():
+		return "ringlink" in server_slot_data and (server_slot_data["ringlink"] or server_slot_data["ringlink"] == "true")
+
 func notify_server_item_received(item: NetworkItem) -> void:
 	if GameState.is_server:
 		push_warning("notify_server_item_received called from server")
@@ -57,6 +65,7 @@ func _rpc_items_recieved(items: Array[String]) -> void:
 		SignalBus.upgrade_unlocked.emit(item)
 
 func notify_server_receive_deathlink(source: String, cause: String, json: Dictionary) -> void:
+	ChatController.print_text_to_chat(cause, "[AP:Deathlink][%s]" % source)
 	_rpc_receive_deathlink(source, cause, json)
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -64,11 +73,27 @@ func _rpc_receive_deathlink(_source: String, _cause: String, _json: Dictionary) 
 	if multiplayer.get_remote_sender_id() != current_ap_target_player:
 		return
 	
-	pass
+	if not is_deathlink:
+		return
+	
+	do_receive_deathlink()
+
+func do_receive_deathlink() -> void:
+	if current_ap_target_player not in MultiplayerManager.players:
+		return
+	
+	MultiplayerManager.players[current_ap_target_player]._die(true)
+
+func do_send_deathlink() -> void:
+	if not is_deathlink:
+		return
+	var k_name = MultiplayerManager.player_names[current_ap_target_player]
+	
+	_rpc_send_deathlink.rpc(current_ap_target_player, "The rein of %s was violently ended." % k_name)
 
 @rpc("authority")
-func _rpc_send_deathlink(_source: String, _cause: String, _json: Dictionary) -> void:
-	Archipelago.conn.send_deathlink(_cause)
+func _rpc_send_deathlink(cause: String) -> void:
+	Archipelago.conn.send_deathlink(cause)
 
 func notify_server_receive_bounce() -> void:
 	pass
@@ -82,6 +107,9 @@ func on_new_king(player_id: int) -> void:
 
 @rpc("any_peer")
 func _rpc_notify_server_ringlink(amount: int) -> void:
+	if not is_ringlink:
+		return
+	
 	GameState.kingdom_money += amount
 
 @rpc("authority")

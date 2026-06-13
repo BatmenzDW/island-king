@@ -203,7 +203,7 @@ func take_damage(amount: int) -> void:
 	if current_health <= 0:
 		_die()
 
-func _die() -> void:
+func _die(was_deathlink: bool = false) -> void:
 	crop_count = 0
 	sliced_count = 0
 	cooked_count = 0
@@ -213,6 +213,8 @@ func _die() -> void:
 	
 	if is_king:
 		SignalBus.reset_run.emit()
+		if not was_deathlink:
+			ApManager.server_archipelago.do_send_deathlink()
 
 func harvest_crop() -> int:
 	var rng = RandomNumberGenerator.new()
