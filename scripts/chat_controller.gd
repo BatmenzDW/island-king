@@ -4,6 +4,7 @@ class_name ChatController
 
 @onready var chat: RichTextLabel = $MarginContainer/MarginContainer/ChatText
 @onready var line_edit: LineEdit = $MarginContainer2/LineEdit
+@onready var color: ColorRect = $MarginContainer/ColorRect
 
 static var _inst : ChatController
 
@@ -19,10 +20,13 @@ func _process(_delta: float) -> void:
 	if editing:
 		return
 	if Input.is_action_just_pressed("Open_Chat"):
-		show()
+		_set_visible(true)
 	elif Input.is_action_just_pressed("Close_Chat"):
-		hide()
+		_set_visible(false)
 
+func _set_visible(_visible: bool) -> void:
+	color.visible = _visible
+	line_edit.visible = _visible
 
 func _on_line_edit_editing_toggled(toggled_on: bool) -> void:
 	editing = toggled_on

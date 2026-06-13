@@ -105,6 +105,12 @@ func _rpc_player_name(p_id: int, p_name: String) -> void:
 @rpc("any_peer")
 func _rpc_player_version(p_id: int, ver: String) -> void:
 	if ver != GAME_VERSION:
+		_print_disconnect_reason.rpc_id(p_id, "Incorrect game version. Server is on version %s" % GAME_VERSION)
+		await get_tree().create_timer(1.0).timeout # make sure player gets the disconnect msg before disconnecting them
 		multiplayer.multiplayer_peer.disconnect_peer(p_id)
+
+@rpc()
+func _print_disconnect_reason(reason: String) -> void:
+	ChatController.print_text_to_chat(reason, "[Server]")
 
 static var player_names : Dictionary = {}
