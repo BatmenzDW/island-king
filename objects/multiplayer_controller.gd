@@ -264,7 +264,8 @@ func _rpc_play_sound(sound: String) -> void:
 		"sell":
 			sell.play()
 		"slice":
-			slice.play()
+			if slice.get_playback_position() == 0.0:
+				slice.play()
 		"hurt":
 			hurt.play()
 		"attack":

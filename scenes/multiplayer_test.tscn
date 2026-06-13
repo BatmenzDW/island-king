@@ -501,6 +501,7 @@ _spawnable_scenes = PackedStringArray("uid://buqa5prb01jh2", "uid://bswy0i508o35
 spawn_path = NodePath("../CropFarm")
 
 [node name="CropFarm" type="Node2D" parent="." unique_id=2041825799]
+unique_name_in_owner = true
 position = Vector2(0, -220)
 scale = Vector2(2.5, 2.5)
 script = ExtResource("3_ntqd0")

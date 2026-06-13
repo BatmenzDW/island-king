@@ -80,6 +80,7 @@ func _ready() -> void:
 	SignalBus.upgrade_unlocked.connect(_on_upgrade_unlocked)
 	SignalBus.disable_wall.connect(_remove_wall)
 	SignalBus.reveal_upgrade.connect(_reveal_upgrade)
+	SignalBus.sync_ap_items.connect(_sync_ap_items)
 	if upgrade_name not in upgrades:
 		push_warning("Upgrade %s is missing from data" % upgrade_name)
 	else:
@@ -91,6 +92,14 @@ func _ready() -> void:
 		
 		if upgrade_name not in GameState.upgrades:
 			GameState.upgrades[upgrade_name] = self
+
+func _sync_ap_items(items: Array[String]) -> void:
+	if not ap_start_locked: return
+	
+	if upgrade_name in items:
+		ap_locked = false
+	else:
+		ap_locked = true
 
 func _remove_wall(wall_name: String) -> void:
 	if wall_name == upgrade_name and wall_name not in ["The Button"]:
@@ -145,7 +154,11 @@ func ap_reset() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if not multiplayer.is_server() or purchased or locked or ap_locked:
+	if not multiplayer.is_server() or purchased or locked:
+		return
+	
+	if ap_locked:
+		locked = true
 		return
 	
 	time += delta

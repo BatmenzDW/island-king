@@ -22,10 +22,8 @@ func _on_roominfo(_conn: ConnectionInfo, _json: Dictionary) -> void:
 	connection.obtained_item.connect(_on_obtained_item)
 	connection.obtained_items.connect(_on_obtained_items)
 	connection.refresh_items.connect(_on_refresh_items)
-	connection.on_hint_update.connect(_on_hint_update)
 	connection.traplink.connect(_on_traplink)
 	connection.all_scout_cached.connect(_on_all_scout_cached)
-	connection.locations_loaded.connect(_on_locations_loaded)
 
 func _on_connected(_conn: ConnectionInfo, _json: Dictionary) -> void:
 	GameState.is_ap = true
@@ -38,20 +36,39 @@ func _on_connected(_conn: ConnectionInfo, _json: Dictionary) -> void:
 func _process(_delta: float) -> void:
 	pass
 
-var _locs_loaded : bool = false
-
-# this is probably not needed, but I'm going to leave it as an extra fallback case
-func _on_locations_loaded() -> void:
-	_locs_loaded = true
-	print("Locations Loaded")
-	for to_collect in _collect_queue:
-		collect_location_by_name(to_collect)
-	
-	_collect_queue.clear()
+var last_sent_ringlink_time : float
 
 ## Emitted when a `Bounce` packet is received.
-func _on_bounce(_json: Dictionary) -> void:
-	pass
+func _on_bounce(json: Dictionary) -> void:
+	var tags: Array = json.get("tags", [])
+	if tags.has("RingLink"):
+		var tstamp: float = json["data"].get("time", 0.0)
+		if absf(tstamp - last_sent_ringlink_time) < 0.5:
+			return # Skip traps from self
+		var source: String = json["data"].get("source", "")
+		var amount: int = json["data"].get("amount", 0)
+		_on_rignlink(source, amount)
+
+func _on_rignlink(source: String, amount: int) -> void:
+	GameState.kingdom_money += amount
+	var desc : String
+	if amount >= 0:
+		desc = "gained"
+	else:
+		desc = "lost"
+	ChatController.print_text_to_chat("%s %s coins." % [desc, amount], "AP:RingLink][%s" % source)
+
+func send_ringlink(amount: float) -> void:
+	if not Archipelago.is_ap_connected():
+		return
+	
+	last_sent_ringlink_time = Time.get_unix_time_from_system()
+	var data = {
+		"source": connection.get_player_name(-1, false),
+		"time": last_sent_ringlink_time,
+		"amount": amount
+	}
+	connection.send_bounce(data, [], [], ["RingLink"])
 
 ## Emitted when a `Bounce` packet of type `DeathLink` is received, after the `bounce` signal.
 func _on_deathlink(source: String, cause: String, json: Dictionary) -> void:
@@ -127,11 +144,6 @@ func collect_location_by_name(_name: String) -> void:
 	if not Archipelago.is_ap_connected():
 		_collect_queue.append(_name)
 		push_warning("Not Connected")
-		return
-	
-	if not _locs_loaded:
-		push_warning("Locations not loaded yet.")
-		_collect_queue.append(_name)
 		return
 	
 	var loc = get_location_by_name(_name)

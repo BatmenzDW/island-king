@@ -4,10 +4,23 @@ signal money_changed(value: float)
 
 var is_ap : bool = false
 
+var _kingdom_money : float
 var kingdom_money : float = 0:
 	set(value):
-		kingdom_money = snappedf(value, 0.1)
-		money_changed.emit(kingdom_money)
+		set_kingdom_money(value)
+	get():
+		return _kingdom_money
+
+func set_kingdom_money(value: float, ringlink: bool = false) -> void:
+	if not ringlink:
+		ringlink_accumulation += value - _kingdom_money
+	
+	_kingdom_money = snappedf(value, 0.1)
+	money_changed.emit(kingdom_money)
+
+var ringlink_accumulation : float = 0
+var time_since_money_changed : float = 0.0
+const RINGLINK_ACCUM_TIME : float = 1.0
 
 var current_sell_value : float = 0.25
 var money_gen_delay : float = 10.0
@@ -59,3 +72,11 @@ func _ready() -> void:
 		MultiplayerManager.become_host()
 	if OS.has_feature("ap") or "ap" in arguments:
 		ap = true
+
+func _process(delta: float) -> void:
+	time_since_money_changed += delta
+	
+	if time_since_money_changed >= RINGLINK_ACCUM_TIME:
+		time_since_money_changed = 0
+		ApManager.send_ringlink(ringlink_accumulation)
+		ringlink_accumulation = 0

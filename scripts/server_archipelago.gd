@@ -37,7 +37,8 @@ func notify_server_items_received(items: Array[NetworkItem]) -> void:
 	if GameState.is_server:
 		push_warning("notify_server_items_received called from server")
 		return
-	_rpc_items_recieved.rpc_id(1, items.map(func(item): return item.get_name()))
+	var items_names : Array[String] = items.map(func(item): return item.get_name())
+	_rpc_items_recieved.rpc_id(1, items_names)
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_item_recieved(item: String) -> void:
@@ -95,5 +96,7 @@ func _sync_slot(slot_data: Dictionary, slot_locations: Dictionary[int, bool], re
 	server_slot_data = slot_data
 	server_slot_locations = slot_locations
 	server_received_items = received_items
+	
+	SignalBus.sync_ap_items.emit(server_received_items)
 	
 	print("Slot synced: %s, %s, %s" % [server_slot_data, server_slot_locations, server_received_items])

@@ -38,6 +38,9 @@ static func _send_chat_to_server(msg: String) -> void:
 static func _send_chat_to_client(msg: String) -> void:
 	_inst._rpc_send_chat_to_client.rpc(msg)
 
+static func print_text_to_chat(msg: String, sender: String) -> void:
+	_inst.chat.text += "[%s] %s\n" % [sender, msg]
+
 @rpc("any_peer")
 func _rpc_send_chat_to_server(msg: String) -> void:
 	_send_chat_to_client(msg)

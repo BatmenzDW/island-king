@@ -28,3 +28,5 @@ signal mult_sell_speed(speed: float)
 signal mult_player_speed(speed: float)
 
 signal victory(ending: String)
+
+signal sync_ap_items(items: Array[String])

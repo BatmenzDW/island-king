@@ -1,6 +1,8 @@
 extends Node2D
 class_name CropFarm
 
+@onready var crop_farm: CropFarm = %CropFarm
+
 @export var farm_name : String
 
 
@@ -23,6 +25,7 @@ func _ready() -> void:
 	if farm_name not in GameState.farms:
 		GameState.farms[farm_name] = self
 	reset()
+	SignalBus.reset_run.connect(reset)
 
 func reset():
 	spawn_delay = init_spawn_delay
@@ -30,6 +33,7 @@ func reset():
 	time_passed = 0
 	for crop in current_crop_pos.values():
 		crop.queue_free()
+	current_crop_pos.clear()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -51,12 +55,11 @@ func spawn_crops():
 		var crop = crop_scene.instantiate()
 		crop.visible = false
 		
-		add_child(crop, true)
+		crop_farm.add_child(crop, true)
 		crop.position = spawn_pos
 		crop.visible = true
 		
 		current_crop_pos[spawn_pos] = crop
-
 
 func _get_random_grid_point_in_shape(rect: Rect2) -> Vector2:
 	var rng = RandomNumberGenerator.new()
