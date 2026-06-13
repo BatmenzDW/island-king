@@ -15,6 +15,7 @@ func _process(_delta: float) -> void:
 	pass
 
 func _upgrade_purchased_server(upgrade: String) -> void:
+	_upgrade_purchased_text(upgrade)
 	if current_ap_target_player < 0:
 		return
 	_upgrade_purchased.rpc_id(current_ap_target_player, upgrade)
@@ -22,6 +23,10 @@ func _upgrade_purchased_server(upgrade: String) -> void:
 @rpc()
 func _upgrade_purchased(upgrade: String) -> void:
 	upgrade_purchased.emit(upgrade)
+
+func _upgrade_purchased_text(upgrade: String) -> void:
+	var text = "[color=gold]" + Upgrade.get_upgrade_bought_text(upgrade) + "[/color]"
+	ChatController._send_chat_to_client(text)
 
 static var server_slot_data : Dictionary
 static var server_slot_locations: Dictionary[int, bool]
@@ -68,9 +73,16 @@ func _rpc_send_deathlink(_source: String, _cause: String, _json: Dictionary) -> 
 func notify_server_receive_bounce() -> void:
 	pass
 
+func notify_server_recieve_ringlink(amount: int) -> void:
+	_rpc_notify_server_ringlink.rpc_id(1, amount)
+
 func on_new_king(player_id: int) -> void:
 	current_ap_target_player = player_id
 	_request_sync_slot.rpc_id(player_id)
+
+@rpc("any_peer")
+func _rpc_notify_server_ringlink(amount: int) -> void:
+	GameState.kingdom_money += amount
 
 @rpc("authority")
 func _request_sync_slot() -> void:

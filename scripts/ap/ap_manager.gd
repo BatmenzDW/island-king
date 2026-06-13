@@ -50,7 +50,7 @@ func _on_bounce(json: Dictionary) -> void:
 		_on_rignlink(source, amount)
 
 func _on_rignlink(source: String, amount: int) -> void:
-	GameState.kingdom_money += amount
+	server_archipelago.notify_server_receive_ringlink()
 	var desc : String
 	if amount >= 0:
 		desc = "gained"

@@ -74,6 +74,9 @@ var time : float = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if upgrade_list.is_empty():
+		upgrade_list = upgrades
+	
 	reset()
 	SignalBus.reset_run.connect(reset)
 	SignalBus.ap_reset.connect(ap_reset)
@@ -115,17 +118,13 @@ func _reveal_upgrade(upgrade: String) -> void:
 		collision.disabled = false
 
 func _on_upgrade_unlocked(upgrade: String) -> void:
-	if upgrade != upgrade_name:
+	if upgrade != upgrade_name or not ap_start_locked:
 		return
 	
-	ap_locked = not _is_ap_unlocked()
+	ap_locked = false
 	
-	if ap_locked:
-		sprite.play("locked")
-		return
-	
-	if not locked and not purchased:
-		sprite.play("avalible")
+	if not init_locked:
+		locked = false
 
 func reset() -> void:
 	purchased = false
@@ -253,6 +252,23 @@ func _is_ap_unlocked() -> bool:
 		return true
 	
 	return false
+
+const PURCHASE_TEXT = "%s has purchased [hint=%s]%s[/hint]"
+
+static func get_upgrade_bought_text(_upgrade_name: String) -> String:
+	if _upgrade_name not in upgrade_list:
+		return ""
+	
+	var upgrade_data = upgrade_list[_upgrade_name]
+	var purchaser : String
+	if upgrade_data.cost_type == CostType.Coins:
+		purchaser = "The king"
+	else:
+		purchaser = "The kingdom"
+	
+	return PURCHASE_TEXT % [purchaser, upgrade_data.description, _upgrade_name]
+
+static var upgrade_list : Dictionary[String, UpgradeData] = {}
 
 var upgrades : Dictionary[String, UpgradeData] = {
 	"Faster Crop Spawn Rate": UpgradeData.create(25.0, CostType.Coins, "Increases crop spawn rate 50%", func(): GameState.mult_farms_speed(1.5)),

@@ -528,191 +528,520 @@ scale = Vector2(2, 2)
 [node name="FasterCropSpawn" parent="Upgrades" unique_id=296584255 instance=ExtResource("12_o7cbl")]
 position = Vector2(185, -60)
 upgrade_name = "Faster Crop Spawn Rate"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="EconomicsRoom" parent="Upgrades" unique_id=1387010542 instance=ExtResource("12_o7cbl")]
 position = Vector2(16013, -100)
 upgrade_name = "Economics Room"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="FasterMoney" parent="Upgrades" unique_id=1917927365 instance=ExtResource("12_o7cbl")]
 position = Vector2(15890, -109)
 upgrade_name = "Faster Money Generation"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="BetterSellDeals" parent="Upgrades" unique_id=1229626900 instance=ExtResource("12_o7cbl")]
 position = Vector2(15947, -109)
 upgrade_name = "Better Sell Deals"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="Backyard" parent="Upgrades" unique_id=351714051 instance=ExtResource("12_o7cbl")]
 position = Vector2(16110, 66)
 upgrade_name = "Unlock Backyard"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="Basement" parent="Upgrades" unique_id=123430689 instance=ExtResource("12_o7cbl")]
 position = Vector2(946, -669)
 upgrade_name = "Unlock Basement"
 start_hidden = true
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="TownCenter" parent="Upgrades" unique_id=1046062646 instance=ExtResource("12_o7cbl")]
 position = Vector2(426, 15086)
 upgrade_name = "Town Center Upgrade"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="Shop" parent="Upgrades" unique_id=828232418 instance=ExtResource("12_o7cbl")]
 position = Vector2(576, 141)
 upgrade_name = "Open Shop (King)"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="Shop2" parent="Upgrades" unique_id=273229137 instance=ExtResource("12_o7cbl")]
 position = Vector2(651, 141)
 upgrade_name = "Open Shop"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
 is_funding = true
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="CropFertilizer" parent="Upgrades" unique_id=357199426 instance=ExtResource("12_o7cbl")]
 position = Vector2(110, 20395)
 upgrade_name = "Crop Fertilizer"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="FasterProcessing" parent="Upgrades" unique_id=1263501573 instance=ExtResource("12_o7cbl")]
 position = Vector2(-608, 20216)
 upgrade_name = "Faster Processing"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="IntensiveResearch" parent="Upgrades" unique_id=1830671547 instance=ExtResource("12_o7cbl")]
 position = Vector2(-708, 20216)
 upgrade_name = "Intensive Research"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="SignificantlyCropierCrops" parent="Upgrades" unique_id=1714723389 instance=ExtResource("12_o7cbl")]
 position = Vector2(-657, 20216)
 upgrade_name = "Significantly Cropier Crops"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="TheButton" parent="Upgrades" unique_id=916908220 instance=ExtResource("12_o7cbl")]
 position = Vector2(-833, 20216)
 upgrade_name = "The Button"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="TheButton2" parent="Upgrades" unique_id=1424748503 instance=ExtResource("12_o7cbl")]
 position = Vector2(-834, 20257)
 upgrade_name = "WIP"
+start_hidden = null
 init_locked = true
 locked = true
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="TheButton3" parent="Upgrades" unique_id=40030512 instance=ExtResource("12_o7cbl")]
 position = Vector2(-834, 20299)
 upgrade_name = "WIP"
+start_hidden = null
 init_locked = true
 locked = true
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="ExtremeEconomy" parent="Upgrades" unique_id=1449895985 instance=ExtResource("12_o7cbl")]
 position = Vector2(-224, 20285)
 upgrade_name = "Extreme Economy"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "Intensive Research"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="BetterReturnRates" parent="Upgrades" unique_id=1668008123 instance=ExtResource("12_o7cbl")]
 position = Vector2(-224, 20334)
 upgrade_name = "Better Return Rates"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "Intensive Research"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="CropHarvestingTechnology" parent="Upgrades" unique_id=1275878503 instance=ExtResource("12_o7cbl")]
 position = Vector2(-224, 20388)
 upgrade_name = "Crop Harvesting Technology"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "Intensive Research"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="ADollarADime" parent="Upgrades" unique_id=327801258 instance=ExtResource("12_o7cbl")]
 position = Vector2(109, 365)
 upgrade_name = "A Dollar A Dime"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "The Button"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="DoubleCityFunding" parent="Upgrades" unique_id=1200528615 instance=ExtResource("12_o7cbl")]
 position = Vector2(214, 365)
 upgrade_name = "Double City Funding"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "The Button"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="GuaranteedReturns" parent="Upgrades" unique_id=22006885 instance=ExtResource("12_o7cbl")]
 position = Vector2(328, 364)
 upgrade_name = "Guaranteed Returns"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "The Button"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="BetterFarmers" parent="Upgrades" unique_id=510486802 instance=ExtResource("12_o7cbl")]
 position = Vector2(435, -774)
 upgrade_name = "Better Farmers"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "The Button"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="IncrediblyFastGrowth" parent="Upgrades" unique_id=179486117 instance=ExtResource("12_o7cbl")]
 position = Vector2(592, -776)
 upgrade_name = "Incredibly Fast Growth"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "The Button"
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="BiggerBunker" parent="Upgrades" unique_id=1056027319 instance=ExtResource("12_o7cbl")]
 position = Vector2(343, 15010)
 upgrade_name = "Bigger Bunker"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "The Button"
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="ExpansionIsland" parent="Upgrades" unique_id=1844713212 instance=ExtResource("12_o7cbl")]
 position = Vector2(143, 14732)
 upgrade_name = "Expansion Island"
 start_hidden = true
+init_locked = null
+locked = null
 prereq = "The Button"
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="MoraleBoost" parent="Upgrades" unique_id=1907192353 instance=ExtResource("12_o7cbl")]
 position = Vector2(5037, 3800)
 upgrade_name = "Morale Boost"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="LowerShippingTaxes" parent="Upgrades" unique_id=1378191839 instance=ExtResource("12_o7cbl")]
 position = Vector2(4948, 3801)
 upgrade_name = "Lower Shipping Taxes"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="EvenBetterHarvesting" parent="Upgrades" unique_id=943941623 instance=ExtResource("12_o7cbl")]
 position = Vector2(4847, 3804)
 upgrade_name = "Even Better Harvesting"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="FasterSelling" parent="Upgrades" unique_id=293228544 instance=ExtResource("12_o7cbl")]
 position = Vector2(4751, 3805)
 upgrade_name = "Faster Selling"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="FarmingIsland" parent="Upgrades" unique_id=1690566566 instance=ExtResource("12_o7cbl")]
 position = Vector2(4166, 4209)
 upgrade_name = "Farming Island"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="DeluxeFarm" parent="Upgrades" unique_id=392864947 instance=ExtResource("12_o7cbl")]
 position = Vector2(6016, 3797)
 upgrade_name = "Deluxe Farm"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="QualityControl" parent="Upgrades" unique_id=249281673 instance=ExtResource("12_o7cbl")]
 position = Vector2(5887, 3801)
 upgrade_name = "Quality Control"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="BetterFilters" parent="Upgrades" unique_id=1417497572 instance=ExtResource("12_o7cbl")]
 position = Vector2(5775, 3802)
 upgrade_name = "Better Filters"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="FortifiedIsland" parent="Upgrades" unique_id=144762368 instance=ExtResource("12_o7cbl")]
 position = Vector2(5382, 4202)
 upgrade_name = "Fortified Island"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="MysteriousIsland" parent="Upgrades" unique_id=650416033 instance=ExtResource("12_o7cbl")]
 position = Vector2(6812, 4223)
 upgrade_name = "Mysterious Island"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
 ap_start_locked = true
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="TheGrandFinale" parent="Upgrades" unique_id=929485121 instance=ExtResource("12_o7cbl")]
 position = Vector2(7380, 4021)
 upgrade_name = "The Grand Finale"
+start_hidden = null
+init_locked = null
+locked = null
+prereq = null
+ap_start_locked = null
+ap_locked = null
+is_funding = null
+is_infinitly_fundable = null
+funding_total = null
+purchased = null
 
 [node name="Buildings" type="Node" parent="." unique_id=1020843271]
 
