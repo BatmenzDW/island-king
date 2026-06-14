@@ -94,7 +94,7 @@ func do_send_deathlink() -> void:
 		return
 	var k_name = MultiplayerManager.player_names[current_ap_target_player]
 	
-	_rpc_send_deathlink.rpc(current_ap_target_player, "The rein of %s was violently ended." % k_name)
+	_rpc_send_deathlink.rpc_id(current_ap_target_player, "The rein of %s was violently ended." % k_name)
 
 @rpc("authority")
 func _rpc_send_deathlink(cause: String) -> void:

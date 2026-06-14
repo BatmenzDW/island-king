@@ -295,7 +295,7 @@ var upgrades : Dictionary[String, UpgradeData] = {
 	"Incredibly Fast Growth": UpgradeData.create(125.0, CostType.Coins, "Increases crop spawn rate by 100%.", func(): GameState.mult_farms_speed(2.0)),
 	"Bigger Bunker": UpgradeData.create(75.0, CostType.Coins, "Expands the underground bunker, also adding another area to get upgrades in.", func(): SignalBus.disable_wall.emit("Bigger Bunker")),
 	"Expansion Island": UpgradeData.create(350.0, CostType.Coins, "Adds a teleporter to a new island.", func(): SignalBus.enable_door.emit("Expansion Island")),
-	"Morale Boost": UpgradeData.create(200.0, CostType.Coins, "Increases everyone's speed by 20%.", func(): SignalBus.mult_player_speed.emit(1.2)),
+	"Morale Boost": UpgradeData.create(200.0, CostType.Coins, "Increases everyone\'s speed by 20%.", func(): SignalBus.mult_player_speed.emit(1.2)),
 	"Lower Shipping Taxes": UpgradeData.create(200.0, CostType.Coins, "Increases the melon sell price by 0.3.", func(): GameState.current_sell_value += 0.3),
 	"Even Better Harvesting": UpgradeData.create(200.0, CostType.Coins, "Increases melons per melon from 3-7 to 5-9.", func(): GameState.drop_count_min += 2; GameState.drop_count_max += 2),
 	"Faster Selling": UpgradeData.create(150.0, CostType.Coins, "Quintuples crop sell speed.", func(): SignalBus.mult_sell_speed.emit(4.0)),
