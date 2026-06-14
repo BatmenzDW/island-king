@@ -2,7 +2,7 @@ extends Control
 
 class_name ChatController
 
-const FADEOUT_DELAY = 2.5
+const FADEOUT_DELAY = 5.0
 const FADEOUT_STEP = 1.0/10.0
 var fadeout_time = 0.0
 
@@ -30,11 +30,12 @@ var editing : bool = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if not is_open:
+	if not is_open and chat.visible:
 		fadeout_time += _delta
 		
 		if fadeout_time >= FADEOUT_DELAY:
 			_set_chat_visible(false)
+			fadeout_time = 0
 	
 	if editing:
 		return

@@ -34,11 +34,11 @@ static var server_received_items : Array[String]
 
 static var is_deathlink : bool:
 	get():
-		return "deathlink" in server_slot_data and (server_slot_data["deathlink"] or server_slot_data["deathlink"] == "true")
+		return "deathlink" in server_slot_data and server_slot_data["deathlink"] == 1.0
 
 static var is_ringlink : bool:
 	get():
-		return "ringlink" in server_slot_data and (server_slot_data["ringlink"] or server_slot_data["ringlink"] == "true")
+		return "ringlink" in server_slot_data and server_slot_data["ringlink"] == 1.0
 
 func notify_server_item_received(item: NetworkItem) -> void:
 	if GameState.is_server:
@@ -68,7 +68,7 @@ func _rpc_items_recieved(items: Array[String]) -> void:
 
 func notify_server_receive_deathlink(source: String, cause: String, json: Dictionary) -> void:
 	ChatController.print_text_to_chat(cause, "AP:Deathlink][%s" % source)
-	_rpc_receive_deathlink(source, cause, json)
+	_rpc_receive_deathlink.rpc_id(1, source, cause, json)
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_receive_deathlink(_source: String, _cause: String, _json: Dictionary) -> void:

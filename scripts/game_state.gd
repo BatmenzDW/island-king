@@ -20,7 +20,7 @@ func set_kingdom_money(value: float, ringlink: bool = false) -> void:
 
 var ringlink_accumulation : float = 0
 var time_since_money_changed : float = 0.0
-const RINGLINK_ACCUM_TIME : float = 1.0
+const RINGLINK_ACCUM_TIME : float = 10.0
 
 var current_sell_value : float = 0.25
 var money_gen_delay : float = 10.0

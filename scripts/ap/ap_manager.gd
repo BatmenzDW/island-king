@@ -10,11 +10,11 @@ var server_archipelago: ServerArchipelago:
 
 var is_deathlink : bool:
 	get():
-		return "deathlink" in connection.slot_data and (connection.slot_data["deathlink"] or connection.slot_data["deathlink"] == "true")
+		return "deathlink" in connection.slot_data and connection.slot_data["deathlink"] == 1.0
 
 var is_ringlink : bool:
 	get():
-		return "ringlink" in connection.slot_data and (connection.slot_data["ringlink"] or connection.slot_data["ringlink"] == "true")
+		return "ringlink" in connection.slot_data and connection.slot_data["ringlink"] == 1.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -65,6 +65,7 @@ func _on_rignlink(source: String, amount: int) -> void:
 	else:
 		desc = "lost"
 	ChatController.print_text_to_chat("%s %s coins." % [desc, amount], "AP:RingLink][%s" % source)
+	server_archipelago.notify_server_recieve_ringlink(amount)
 
 func send_ringlink(amount: float) -> void:
 	if not Archipelago.is_ap_connected() or not is_ringlink or amount == 0.0:
