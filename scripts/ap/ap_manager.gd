@@ -132,6 +132,7 @@ func _send_bounce(data: Dictionary, target_games: Array[String], target_slots: A
 		return
 	connection.send_bounce(data, target_games, target_slots, target_tags)
 
+@rpc()
 func _on_goal() -> void:
 	print("Goaled")
 	Archipelago.set_client_status(Archipelago.ClientStatus.CLIENT_GOAL)
@@ -168,4 +169,4 @@ func collect_location_by_name(_name: String) -> void:
 
 func _on_victory(ending: String) -> void:
 	if ending == "True Urban": # TODO: add goal to slot_data and handle it here
-		_on_goal()
+		_on_goal.rpc_id(server_archipelago.current_ap_target_player)
