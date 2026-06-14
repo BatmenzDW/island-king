@@ -2,9 +2,21 @@ extends Control
 
 class_name ChatController
 
+const FADEOUT_DELAY = 2.5
+const FADEOUT_STEP = 255.0/10.0
+var fadeout_time = 0.0
+
 @onready var chat: RichTextLabel = $MarginContainer/MarginContainer/ChatText
 @onready var line_edit: LineEdit = $MarginContainer2/LineEdit
 @onready var color: ColorRect = $MarginContainer/ColorRect
+
+var chat_text : String:
+	set(msg):
+		chat.text = msg
+		modulate.a = 255
+		fadeout_time = 0
+	get():
+		return chat.text
 
 static var _inst : ChatController
 
@@ -16,13 +28,23 @@ var editing : bool = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if modulate.a >= 0:
+		fadeout_time += _delta
+		
+		if fadeout_time >= FADEOUT_DELAY:
+			modulate.a -= FADEOUT_STEP
+	
+	if modulate.a >= 255:
+		fadeout_time = 0
 	
 	if editing:
 		return
 	if Input.is_action_just_pressed("Open_Chat"):
 		_set_visible(true)
+		chat.mouse_filter = Control.MOUSE_FILTER_STOP
 	elif Input.is_action_just_pressed("Close_Chat"):
 		_set_visible(false)
+		chat.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _set_visible(_visible: bool) -> void:
 	color.visible = _visible
@@ -32,8 +54,8 @@ func _on_line_edit_editing_toggled(toggled_on: bool) -> void:
 	editing = toggled_on
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
-	var chat_text = "[%s] %s" % [GameState.player_name, new_text]
-	_send_chat_to_server(chat_text)
+	var _chat_text = "[%s] %s" % [GameState.player_name, new_text]
+	_send_chat_to_server(_chat_text)
 	line_edit.text = ""
 
 static func _send_chat_to_server(msg: String) -> void:
@@ -43,7 +65,7 @@ static func _send_chat_to_client(msg: String) -> void:
 	_inst._rpc_send_chat_to_client.rpc(msg)
 
 static func print_text_to_chat(msg: String, sender: String) -> void:
-	_inst.chat.text += "[%s] %s\n" % [sender, msg]
+	_inst.chat_text += "[%s] %s\n" % [sender, msg]
 
 @rpc("any_peer")
 func _rpc_send_chat_to_server(msg: String) -> void:
@@ -51,8 +73,7 @@ func _rpc_send_chat_to_server(msg: String) -> void:
 
 @rpc("authority")
 func _rpc_send_chat_to_client(msg: String) -> void:
-	chat.text += msg + "\n"
-
+	chat_text += msg + "\n"
 
 func _on_name_edit_editing_toggled(toggled_on: bool) -> void:
 	editing = toggled_on

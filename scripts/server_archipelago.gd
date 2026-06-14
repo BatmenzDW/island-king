@@ -65,21 +65,24 @@ func _rpc_items_recieved(items: Array[String]) -> void:
 		SignalBus.upgrade_unlocked.emit(item)
 
 func notify_server_receive_deathlink(source: String, cause: String, json: Dictionary) -> void:
-	ChatController.print_text_to_chat(cause, "[AP:Deathlink][%s]" % source)
+	ChatController.print_text_to_chat(cause, "AP:Deathlink][%s" % source)
 	_rpc_receive_deathlink(source, cause, json)
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_receive_deathlink(_source: String, _cause: String, _json: Dictionary) -> void:
 	if multiplayer.get_remote_sender_id() != current_ap_target_player:
+		print("Received deathlink from player %s while they were not king" % multiplayer.get_remote_sender_id())
 		return
 	
 	if not is_deathlink:
+		print("Received deathlink while deathlink was off.")
 		return
 	
 	do_receive_deathlink()
 
 func do_receive_deathlink() -> void:
 	if current_ap_target_player not in MultiplayerManager.players:
+		print("Couldn't find king player to kill.")
 		return
 	
 	MultiplayerManager.players[current_ap_target_player]._die(true)
