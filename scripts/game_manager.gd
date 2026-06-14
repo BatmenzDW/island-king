@@ -55,6 +55,8 @@ static var server_archipelago : ServerArchipelago
 
 var time: float = 0.0
 
+var progressive_coins_received = 0.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	reset()
@@ -107,6 +109,7 @@ func reset() -> void:
 	gold_return_rate = init_gold_return_rate
 	drop_count_max = init_drop_count_max
 	drop_count_min = init_drop_count_min
+	progressive_coins_received = 0.0
 	GameState.better_farmers = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -155,5 +158,5 @@ func _client_play_fireworks_sfx() -> void:
 	fireworks.play()
 
 var filler_items : Dictionary[String, Callable] = {
-	"50 Coins": func(): kingdom_money += 50,
+	"50 Coins": func(): progressive_coins_received += 1; kingdom_money += 50 * progressive_coins_received,
 }
