@@ -133,6 +133,7 @@ func _send_bounce(data: Dictionary, target_games: Array[String], target_slots: A
 	connection.send_bounce(data, target_games, target_slots, target_tags)
 
 func _on_goal() -> void:
+	print("Goaled")
 	Archipelago.set_client_status(Archipelago.ClientStatus.CLIENT_GOAL)
 
 func send_deathlink(cause: String = "") -> void:

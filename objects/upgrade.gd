@@ -289,7 +289,7 @@ var upgrades : Dictionary[String, UpgradeData] = {
 	"Crop Harvesting Technology": UpgradeData.create(25.0, CostType.Coins, "Increases crops per crop from 2-5 to 3-7.", func(): GameState.drop_count_min += 1; GameState.drop_count_max += 2),
 	"The Button": UpgradeData.create(180.0, CostType.Coins, "Expands the merchant house and basement, adding 3 new areas to get upgrades in.", func(): SignalBus.disable_wall.emit("The Button"); SignalBus.reveal_upgrade.emit("The Button"); SignalBus.enable_door.emit("The Button")),
 	"A Dollar A Dime": UpgradeData.create(80.0, CostType.Coins, "Increases the crop sell price by 0.25.", func(): GameState.current_sell_value += 0.25),
-	"Double City Funding": UpgradeData.create(150.0, CostType.Coins, "Gold put into the town bank is now doubled. [color=red](WIP)[/color]", func(): pass),
+	"Double City Funding": UpgradeData.create(150.0, CostType.Coins, "Gold put into the town bank is now doubled. (WIP)", func(): pass),
 	"Guaranteed Returns": UpgradeData.create(80.0, CostType.Coins, "Citizens are guaranteed to get gold from selling to the merchant, as well as getting more gold than usual.", func(): GameState.gold_return_rate += 1.0),
 	"Better Farmers": UpgradeData.create(125.0, CostType.Coins, "Breaking crops will break all adjacent crops.", func(): GameState.better_farmers = true),
 	"Incredibly Fast Growth": UpgradeData.create(125.0, CostType.Coins, "Increases crop spawn rate by 100%.", func(): GameState.mult_farms_speed(2.0)),
