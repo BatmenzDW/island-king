@@ -212,9 +212,10 @@ func _die(was_deathlink: bool = false) -> void:
 	position.x = 0; position.y = 0
 	
 	if is_king:
-		SignalBus.reset_run.emit()
 		if not was_deathlink:
 			ApManager.server_archipelago.do_send_deathlink()
+		
+		SignalBus.reset_run.emit()
 
 func harvest_crop() -> int:
 	var rng = RandomNumberGenerator.new()
