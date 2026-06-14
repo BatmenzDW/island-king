@@ -3,17 +3,19 @@ extends Control
 class_name ChatController
 
 const FADEOUT_DELAY = 2.5
-const FADEOUT_STEP = 255.0/10.0
+const FADEOUT_STEP = 1.0/10.0
 var fadeout_time = 0.0
 
 @onready var chat: RichTextLabel = $MarginContainer/MarginContainer/ChatText
 @onready var line_edit: LineEdit = $MarginContainer2/LineEdit
 @onready var color: ColorRect = $MarginContainer/ColorRect
 
+var is_open : bool = false
+
 var chat_text : String:
 	set(msg):
 		chat.text = msg
-		modulate.a = 255
+		_set_chat_visible(true)
 		fadeout_time = 0
 	get():
 		return chat.text
@@ -28,14 +30,11 @@ var editing : bool = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if modulate.a >= 0:
+	if not is_open:
 		fadeout_time += _delta
 		
 		if fadeout_time >= FADEOUT_DELAY:
-			modulate.a -= FADEOUT_STEP
-	
-	if modulate.a >= 255:
-		fadeout_time = 0
+			_set_chat_visible(false)
 	
 	if editing:
 		return
@@ -47,8 +46,15 @@ func _process(_delta: float) -> void:
 		chat.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _set_visible(_visible: bool) -> void:
+	is_open = _visible
 	color.visible = _visible
 	line_edit.visible = _visible
+	
+	if _visible:
+		_set_chat_visible(true)
+
+func _set_chat_visible(_visible: bool) -> void:
+	chat.visible = _visible
 
 func _on_line_edit_editing_toggled(toggled_on: bool) -> void:
 	editing = toggled_on

@@ -61,6 +61,7 @@ func _ready() -> void:
 	SignalBus.reset_run.connect(_reset_run)
 	SignalBus.upgrade_unlocked.connect(_filler_recieved)
 	SignalBus.upgrade_purchased.connect(_upgrade_purchased)
+	SignalBus.sync_ap_items.connect(_sync_filler_items)
 	
 	server_archipelago = %ServerArchipelago
 
@@ -76,6 +77,10 @@ func _filler_recieved(filler: String) -> void:
 		return
 	
 	filler_items[filler].call()
+
+func _sync_filler_items(items: Array[String]) -> void:
+	for item in items:
+		_filler_recieved(item)
 
 func _reset_run() -> void:
 	reset()

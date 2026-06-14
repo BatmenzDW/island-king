@@ -223,8 +223,9 @@ theme_override_constants/margin_bottom = 10
 
 [node name="ColorRect" type="ColorRect" parent="UI/Chat/MarginContainer" unique_id=1833499354]
 visible = false
+self_modulate = Color(1, 1, 1, 0.40392157)
 layout_mode = 2
-color = Color(0.18717614, 0.18717614, 0.18717614, 0.54901963)
+color = Color(0.1882353, 0.1882353, 0.1882353, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="UI/Chat/MarginContainer" unique_id=1545941170]
 layout_mode = 2

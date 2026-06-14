@@ -20,6 +20,8 @@ AP_GAME_TAGS = Array[String](["RingLink", "DeathLink"])
 AP_CLIENT_VERSION = SubResource("Resource_pmgvy")
 AP_VERSION = SubResource("Resource_m1v20")
 AP_PRINT_ITEMS_ON_CONNECT = true
+AP_LOG_COMMUNICATION = true
+AP_LOG_RECIEVED = true
 
 [node name="HangTimer" type="Timer" parent="." unique_id=741810701]
 wait_time = 5.0

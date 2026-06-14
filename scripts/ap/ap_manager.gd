@@ -28,7 +28,7 @@ func _on_roominfo(_conn: ConnectionInfo, _json: Dictionary) -> void:
 	connection.setreply.connect(_on_setreply)
 	connection.roomupdate.connect(_on_roomupdate)
 	connection.obtained_item.connect(_on_obtained_item)
-	connection.obtained_items.connect(_on_obtained_items)
+	#connection.obtained_items.connect(_on_obtained_items)
 	connection.refresh_items.connect(_on_refresh_items)
 	connection.traplink.connect(_on_traplink)
 	connection.all_scout_cached.connect(_on_all_scout_cached)
@@ -50,15 +50,15 @@ var last_sent_ringlink_time : float
 func _on_bounce(json: Dictionary) -> void:
 	var tags: Array = json.get("tags", [])
 	if tags.has("RingLink") and is_ringlink:
-		var tstamp: float = json["data"].get("time", 0.0)
+		var tstamp: float = json.get("time", 0.0)
 		if absf(tstamp - last_sent_ringlink_time) < 0.5:
 			return # Skip traps from self
-		var source: String = json["data"].get("source", "")
-		var amount: int = json["data"].get("amount", 0)
+		var source: String = json.get("source", "")
+		var amount: int = json.get("amount", 0)
 		_on_rignlink(source, amount)
 
 func _on_rignlink(source: String, amount: int) -> void:
-	server_archipelago.notify_server_receive_ringlink()
+	#server_archipelago.notify_server_receive_ringlink()
 	var desc : String
 	if amount >= 0:
 		desc = "gained"
@@ -67,7 +67,7 @@ func _on_rignlink(source: String, amount: int) -> void:
 	ChatController.print_text_to_chat("%s %s coins." % [desc, amount], "AP:RingLink][%s" % source)
 
 func send_ringlink(amount: float) -> void:
-	if not Archipelago.is_ap_connected() or not is_ringlink:
+	if not Archipelago.is_ap_connected() or not is_ringlink or amount == 0.0:
 		return
 	
 	last_sent_ringlink_time = Time.get_unix_time_from_system()
@@ -96,10 +96,10 @@ func _on_obtained_item(item: NetworkItem) -> void:
 	server_archipelago.notify_server_item_received(item)
 
 ## Emitted for each item *packet* received
-func _on_obtained_items(items: Array[NetworkItem]) -> void:
-	for item in items:
-		print("Item obtained: %s" % item.get_name())
-	server_archipelago.notify_server_items_received(items)
+#func _on_obtained_items(items: Array[NetworkItem]) -> void:
+	#for item in items:
+		#print("Item obtained: %s" % item.get_name())
+	#server_archipelago.notify_server_items_received(items)
 
 ## Emitted when the server re-sends ALL obtained items
 func _on_refresh_items(_items: Array[NetworkItem]) -> void:

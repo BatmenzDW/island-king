@@ -44,14 +44,16 @@ func notify_server_item_received(item: NetworkItem) -> void:
 	if GameState.is_server:
 		push_warning("notify_server_item_received called from server")
 		return
+	if multiplayer.get_unique_id() == 1:
+		return
 	_rpc_item_recieved.rpc_id(1, item.get_name())
 
-func notify_server_items_received(items: Array[NetworkItem]) -> void:
-	if GameState.is_server:
-		push_warning("notify_server_items_received called from server")
-		return
-	var items_names : Array[String] = items.map(func(item): return item.get_name())
-	_rpc_items_recieved.rpc_id(1, items_names)
+#func notify_server_items_received(items: Array[NetworkItem]) -> void:
+	#if GameState.is_server:
+		#push_warning("notify_server_items_received called from server")
+		#return
+	#var items_names : Array[String] = items.map(func(item): return item.get_name())
+	#_rpc_items_recieved.rpc_id(1, items_names)
 
 @rpc("any_peer", "call_remote", "reliable")
 func _rpc_item_recieved(item: String) -> void:
