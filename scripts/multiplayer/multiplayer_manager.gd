@@ -9,7 +9,7 @@ var is_host : bool = false
 var is_game_connected : bool = false
 
 var SERVER_PORT = 8080
-var SERVER_IP = "13.220.133.35"
+var SERVER_IP = "18.217.56.223"
 
 var GAME_VERSION : String = ProjectSettings.get_setting("application/config/version", "0.0.0")
 
