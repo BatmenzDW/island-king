@@ -24,6 +24,10 @@ MultiplayerManager="*uid://b3t7hrkhituok"
 Archipelago="*uid://c0ovofocoscyg"
 ApManager="*uid://dyhrony6gtc7a"
 
+[debug]
+
+file_logging/enable_file_logging=true
+
 [display]
 
 window/subwindows/embed_subwindows=false
