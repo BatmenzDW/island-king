@@ -21,8 +21,3 @@ func _process(_delta: float) -> void:
 
 func _on_harvest(amount: int, was_adj: bool = false) -> void:
 	crop_farm.on_crop_harvested(position, amount, was_adj)
-
-func on_free() -> void:
-	if sync:
-		sync.public_visibility = false
-		sync.process_mode = Node.PROCESS_MODE_DISABLED

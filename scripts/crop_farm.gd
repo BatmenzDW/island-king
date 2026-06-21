@@ -31,10 +31,11 @@ func reset():
 	spawn_delay = init_spawn_delay
 	spawn_count = init_spawn_count
 	time_passed = 0
-	for crop in current_crop_pos.values():
-		crop.on_free()
-		crop.call_deferred("queue_free")
-	current_crop_pos.clear()
+	for pos in current_crop_pos:
+		var crop = current_crop_pos[pos]
+		current_crop_pos.erase(pos)
+		if is_instance_valid(crop):
+			crop.queue_free()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
