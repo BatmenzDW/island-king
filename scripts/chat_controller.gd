@@ -77,6 +77,7 @@ static func print_text_to_chat(msg: String, sender: String) -> void:
 @rpc("any_peer")
 func _rpc_send_chat_to_server(msg: String) -> void:
 	_send_chat_to_client(msg)
+	print(msg)
 
 @rpc("authority")
 func _rpc_send_chat_to_client(msg: String) -> void:

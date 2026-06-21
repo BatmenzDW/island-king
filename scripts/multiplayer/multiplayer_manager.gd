@@ -68,6 +68,12 @@ func _on_connected_to_server() -> void:
 func _on_client_connected(_id: int) -> void:
 	if $"../GameController/Players".get_child_count() == 1:
 		SignalBus.reset_run.emit()
+	else:
+		for player in $"../GameController/Players".get_children(): # Check if king is still on
+			if player.is_king and player.player_id != _id:
+				return
+		
+		SignalBus.reset_run.emit()
 
 func _add_player_to_game(id: int):
 	print("Player %s joined the game" % id)
@@ -99,6 +105,8 @@ func _rpc_player_name(p_id: int, p_name: String) -> void:
 		
 		p.player_name = p_name
 		break
+	
+	print("%s joined" % p_name)
 	
 	player_names[p_id] = p_name
 
