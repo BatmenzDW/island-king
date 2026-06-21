@@ -4,6 +4,7 @@ class_name Crop
 @onready var crop_farm : CropFarm = $".."
 
 @onready var area_2d: Area2D = $Area2D
+@onready var sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
 
 func _process(_delta: float) -> void:
 	if not multiplayer.is_server():
@@ -20,3 +21,8 @@ func _process(_delta: float) -> void:
 
 func _on_harvest(amount: int, was_adj: bool = false) -> void:
 	crop_farm.on_crop_harvested(position, amount, was_adj)
+
+func on_free() -> void:
+	if sync:
+		sync.public_visibility = false
+		sync.process_mode = Node.PROCESS_MODE_DISABLED
