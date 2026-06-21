@@ -1,0 +1,1 @@
+cat ~/.local/share/godot/app_userdata/Island King/logs/godot.log
