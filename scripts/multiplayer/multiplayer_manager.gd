@@ -18,6 +18,7 @@ func _ready() -> void:
 
 func become_host():
 	print("Become host called")
+	print(SERVER_IP)
 	
 	_players_spawn_node = get_tree().get_current_scene().get_node("Players")
 	
@@ -43,6 +44,7 @@ var pl_name : String
 
 func join_lobby(p_name: String):
 	print("Join called")
+	print(SERVER_IP)
 	
 	is_host = false
 	is_game_connected = true
@@ -60,6 +62,10 @@ func join_lobby(p_name: String):
 	
 	pl_name = p_name
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
+	multiplayer.connection_failed.connect(_on_failed_connection)
+
+func _on_failed_connection() -> void:
+	push_error("Failed to connect to server")
 
 func _on_connected_to_server() -> void:
 	_rpc_player_version.rpc_id(1, multiplayer.get_unique_id(), GAME_VERSION)
